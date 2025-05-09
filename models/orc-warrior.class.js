@@ -1,0 +1,88 @@
+class OrkWorrier extends Enemy {
+
+    height = 80 ;
+    width = 80;
+    energy= 2;
+    
+    lastAttackTime = 0;
+    animationSpeeds = {
+        IDLE: 150,
+        RUN: 120,
+        ATTACK: 180,
+        JUMP: 150,
+        
+    };
+    
+    offset = {
+        top: 10,
+        bottom: 0,
+        left: 20,
+        right: 20
+    }
+    attackRange = {
+        offsetX: 5,
+        width: 20
+    };
+    
+    IMAGES_HURT = [
+        'img/Orcs/Orc_Warrior/Hurt/tile000.png',
+        'img/Orcs/Orc_Warrior/Hurt/tile001.png'
+    ];
+   
+
+    IMAGES_ATTACK = [
+    'img/Orcs/Orc_Warrior/Attack/tile000.png',
+    'img/Orcs/Orc_Warrior/Attack/tile001.png',
+    'img/Orcs/Orc_Warrior/Attack/tile002.png',
+    'img/Orcs/Orc_Warrior/Attack/tile003.png'
+];
+
+    IMAGES_DEAD = [
+        'img/Orcs/Orc_Warrior/Dead/tile000.png',
+        'img/Orcs/Orc_Warrior/Dead/tile001.png',
+        'img/Orcs/Orc_Warrior/Dead/tile002.png',
+        'img/Orcs/Orc_Warrior/Dead/tile003.png'
+    ];
+    
+    IMAGES_RUN = [
+        'img/Orcs/Orc_Warrior/Run/tile000.png',
+        'img/Orcs/Orc_Warrior/Run/tile001.png',
+        'img/Orcs/Orc_Warrior/Run/tile002.png',
+        'img/Orcs/Orc_Warrior/Run/tile003.png',
+        'img/Orcs/Orc_Warrior/Run/tile004.png',
+        'img/Orcs/Orc_Warrior/Run/tile005.png'
+    ];
+
+    IMAGES_IDEL = [
+        'img/Orcs/Orc_Warrior/Idle/tile000.png',
+        'img/Orcs/Orc_Warrior/Idle/tile001.png',
+        'img/Orcs/Orc_Warrior/Idle/tile002.png',
+        'img/Orcs/Orc_Warrior/Idle/tile003.png',
+        'img/Orcs/Orc_Warrior/Idle/tile004.png'
+    ]
+
+    constructor(){
+        super().loadImage('img/Orcs/Orc_Warrior/Idle/tile000.png')
+        this.x = 400 + Math.random() * 300;
+        this.y = 365;
+        this.speed = 0.15 + Math.random() * 0.25;
+    
+        this.loadImages(this.IMAGES_RUN);
+        this.loadImages(this.IMAGES_IDEL);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DEAD);  
+        this.loadImages(this.IMAGES_ATTACK);   
+    
+        this.applyGravity(); 
+    
+        this.animate();
+    }
+    
+    
+
+    animate() {
+        setInterval(() => {
+            this.patrol();
+        }, 1000 / 60);
+    }
+}    
