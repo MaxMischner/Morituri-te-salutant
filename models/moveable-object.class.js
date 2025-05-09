@@ -15,9 +15,9 @@ class MoveabelObject {
     isAttacking = false;
     attackHitFrame = 4;
     attackRange = {
-        offsetX: 50,  // Wie weit der Angriff reicht (vor oder hinter dem Angreifer)
-        width: 70,    // Breite der Hitbox
-    };
+    offsetX: 70,  // Erhöhen Sie diesen Wert
+    width: 100,   // Erhöhen Sie diesen Wert
+};
 
     offset = {
         top: 0,
@@ -109,11 +109,16 @@ class MoveabelObject {
 
     isAttackFrameActive() {
         if (!this.isAttacking) return false;
-    
         let i = this.currentImage % this.IMAGES_ATTACK.length;
-        return i === this.attackHitFrame;
+        return i >= this.attackHitFrame && i <= this.attackHitFrame + 2; // Beispiel: 3 aktive Frames
     }
     hit(target) {
+        if (!this.isAttackFrameActive()) {
+            console.log("Kein aktiver Angriffsframe");
+            return false;
+        }
+
+        console.log("hit-Methode aufgerufen", target);
         let hitbox = {
             x: this.otherDiretion 
                 ? this.x - this.attackRange.offsetX 
@@ -122,55 +127,58 @@ class MoveabelObject {
             width: this.attackRange.width,
             height: this.height - this.offset.top - this.offset.bottom
         };
-    
+
         let targetBox = {
             x: target.x + target.offset.left,
             y: target.y + target.offset.top,
             width: target.width - target.offset.left - target.offset.right,
             height: target.height - target.offset.top - target.offset.bottom
         };
-    
+
         let isHit = hitbox.x < targetBox.x + targetBox.width &&
                     hitbox.x + hitbox.width > targetBox.x &&
                     hitbox.y < targetBox.y + targetBox.height &&
                     hitbox.y + hitbox.height > targetBox.y;
-    
-                    if (isHit) {
-                        console.log("Treffer erkannt!");
-                        if (target instanceof Enemy) {
-                            target.isStunned = true;
-                            target.stunTime = Date.now();
-                            console.log("Gegner gestunnt!");
-                    
-                            // NEU: Welt sofort aktualisieren
-                            if (target.world) {
-                                target.world.draw(); // <-- NEU
-                            }
-                        }
-                    }
-        
-    
+
+        if (isHit) {
+            console.log("Treffer erkannt!", target);
+            if (target instanceof Character) {
+                if (target.isBlocking) {
+                    console.log("Charakter blockt den Angriff!");
+                    this.isStunned = true;
+                    this.stunTime = Date.now();
+                    console.log("Angreifer (this) wurde gestunnt!", this.isStunned, this.stunTime);
+                } else {
+                    console.log("Charakter nimmt Schaden!");
+                    target.takeDamage(20);
+                }
+            } else if (target instanceof Enemy) {
+                console.log("Gegner nimmt Schaden!");
+                target.takeDamage(20);
+            }
+        } else {
+            console.log("Kein Treffer");
+        }
+
         return isHit;
     }
 
     takeDamage(amount = 20) {
-        if (this.isDead) return;
-    
-        if (this.blockActive) {
-            console.log("BLOCK → Angriff wurde geblockt!");
-            this.blockEnergy--; // Blockenergie verbrauchen
-            return; // Kein Schaden
-        }
-    
-        this.energy -= amount;
-    
-        if (this.energy <= 0) {
-            this.energy = 0;
-            this.die();
-        } else {
-            this.playHurtAnimation();
-        }
+    if (this.isDead || this.isBlocking) return;
+
+    console.log(`${this.constructor.name} takeDamage aufgerufen`);
+
+    // Wenn nicht geblockt, dann nur Schaden
+    console.log("Treffer! Schaden verursacht:", amount);
+    this.energy -= amount;
+
+    if (this.energy <= 0) {
+        this.energy = 0;
+        this.die();
+    } else {
+        this.playHurtAnimation();
     }
+}
     
 
     onHitEffect() {
@@ -294,7 +302,9 @@ isBlockingTile(tile) {
            this.y + this.offset.top < tile.y + tile.height;
 }
 
+showStunEffect() {
+    console.log("showStunEffect aufgerufen", this.isStunned, Date.now() - this.stunTime);
+    // Rest der Methode...
+}
 
-
-    
 }

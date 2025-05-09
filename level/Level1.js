@@ -3,8 +3,7 @@ const level1= new Level(
         new OrkWorrier(),
         new OrkWorrier(),
         new OrkWorrier(),
-        
-        
+        // Fügen Sie mehr Gegner hinzu und positionieren Sie sie an verschiedenen Stellen
     ],
      [
         new Cloud(),

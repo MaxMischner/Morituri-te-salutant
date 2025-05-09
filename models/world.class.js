@@ -33,20 +33,19 @@ class World{
 
     checkCollisions(){
         setInterval(() => {
-    
             this.level.enemies.forEach(enemy => {
-    
                 if (this.character.isAttacking && this.character.isAttackFrameActive()) {
+                    console.log("Angriff aktiv, prüfe Treffer");
                     if (this.character.hit(enemy)) {
+                        console.log("Treffer erkannt in checkCollisions");
                         enemy.takeDamage();
-                        console.log('enemy hit');
                     }
                 }
-    
+
                 if (!enemy.isDead) {
                     enemy.tryAttack(this.character);
                 }
-    
+
             });
             this.level.collectableObjects.forEach((collectable, index) => {
                 if (this.character.isColliding(collectable)) {
@@ -54,8 +53,8 @@ class World{
                     this.level.collectableObjects.splice(index, 1); // Entfernen nach Aufsammeln
                 }
             });
-    
-        }, 1000);
+
+        }, 100);
     }
     
    
@@ -70,32 +69,39 @@ class World{
         this.addObjektToMap(this.level.backgroundObjects);
         this.addObjektToMap(this.level.groundTiles);
         this.addObjektToMap(this.level.clouds);
-       
+   
         this.addToMap(this.character);
         
         
         this.addObjektToMap(this.level.collectableObjects);
         this.addEnemisDirektion(this.level.enemies);
         
-        this.ctx.translate(-this.camera_x,0);
-
-       
-        
-
-        
-        let self =this;
-        requestAnimationFrame(function () {
-            self.draw();
+        // HIER NEU: Logging für gestunnte Gegner
+        this.level.enemies.forEach(enemy => {
+            if (enemy.isStunned) {
+                console.log("Gestunnter Gegner wird gezeichnet", enemy);
+            }
         });
 
+        this.ctx.translate(-this.camera_x,0);
+
+   
+    
+
+    
+    let self =this;
+    requestAnimationFrame(function () {
+        self.draw();
+    });
 
 
-        if (this.debugMode) {
-            this.level.enemies.forEach(enemy => this.drawOffsetBox(enemy));
-            this.drawOffsetBox(this.character);
-        }
-        
-        
+
+    if (this.debugMode) {
+        this.level.enemies.forEach(enemy => this.drawOffsetBox(enemy));
+        this.drawOffsetBox(this.character);
+    }
+    
+    
     }
 
     addObjektToMap(objekts){
@@ -121,6 +127,7 @@ class World{
     
             // HIER NEU: Wenn gestunnt, Effekt anzeigen (→ genau hier rein!)
             if (mo.isStunned) {
+                console.log('Enemy is stunned, calling showStunEffect:', mo);
                 mo.showStunEffect();
             }
     

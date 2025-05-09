@@ -1,4 +1,9 @@
-class Enemy extends MoveabelObject{
+class Enemy extends MoveabelObject {
+    constructor() {
+        super();
+        this.isStunned = false;
+        // ... andere Initialisierungen ...
+    }
     direction = -1;
     IMAGES_IDEL = [];
     attackCooldown = 4000;  // In Millisekunden (1 Sekunde)
@@ -61,18 +66,19 @@ startAttack() {
 
 
 patrol() {
+    console.log("patrol aufgerufen, isStunned:", this.isStunned);
     if (this.isDead) return;
     if (this.isStunned) {
-        if (Date.now() - this.stunTime < 3000) { // 1 Sekunde Stun
+        let stunDuration = Date.now() - this.stunTime;
+        console.log("Gegner ist gestunnt, Dauer:", stunDuration);
+        if (stunDuration < 3000) { // 3 Sekunden Stun
             this.playAnimation(this.IMAGES_IDEL, "IDLE");
-            console.log('stune');
-            
             return;
         } else {
-            this.isStunned = false; // <---- WICHTIG: Stun ist vorbei
-        
+            console.log("Stun ist vorbei");
+            this.isStunned = false;
+        }
     }
-}
     
 
     // Angriff läuft → Angriffsupdate aufrufen
@@ -122,7 +128,7 @@ isAttackTargetInRange(target) {
     return distanceX < this.attackRangeValue;
 }
 showStunEffect() {
-    console.log("SHOW STUN EFFECT wird ausgeführt!");
+    console.log("showStunEffect aufgerufen", this.isStunned, Date.now() - this.stunTime);
     if (!this.img) return;
 
     let ctx = this.world?.ctx;

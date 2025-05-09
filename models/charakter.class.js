@@ -7,11 +7,11 @@ class Character extends MoveabelObject {
     blockFrame = 0;
     blockActive = false;
     blockHoldTime = 0;
-    blockMaxHoldTime = 4000; 
-    attackRange = {
-        offsetX: 15,
-        width: 20
-    };
+    blockMaxHoldTime = 60000; 
+   attackRange = {
+    offsetX: 70,  // Erhöhen Sie diesen Wert
+    width: 100,   // Erhöhen Sie diesen Wert
+};
 
     offset = {
         top: 20,
@@ -129,8 +129,7 @@ IMAGES_DEAD = [
             
         }
         if (this.world.keyboard.E && this.blockEnergy > 0 && !this.isBlocking) {
-            this.isBlocking = true;
-            this.blockFrame = 0;
+            this.startBlock();
             
             
         }
@@ -145,6 +144,7 @@ IMAGES_DEAD = [
                 }
 
                 this.world.camera_x = -this.x +25;
+                this.updateBlockStatus();
             }, 1000/60)
         
             setInterval(() => {
@@ -190,5 +190,21 @@ IMAGES_DEAD = [
             
     }
 
-    
+    startBlock() {
+    if (!this.isBlocking && this.blockEnergy > 0) {
+        this.isBlocking = true;
+        this.blockStartTime = Date.now();
+        console.log("Block gestartet");
+    }
+}
+
+updateBlockStatus() {
+    if (this.isBlocking) {
+        let currentTime = Date.now();
+        if (currentTime - this.blockStartTime >= this.blockDuration || this.blockEnergy <= 0) {
+            this.isBlocking = false;
+            console.log("Block beendet");
+        }
+    }
+}
 }
