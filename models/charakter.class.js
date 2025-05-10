@@ -1,6 +1,6 @@
 class Character extends MoveabelObject {
     world;
-    speed = 2;
+    speed = 10;
     score = 0;
     blockEnergy = 11;
     isBlocking = false;
@@ -118,34 +118,65 @@ IMAGES_DEAD = [
     
     animate(){
 
-        setInterval(() =>{
-            if (this.world.keyboard.RIGTH && this.x < this.world.level.level_end_x) {
-               this.moveRight();
+        setInterval(() => {
+        const endZoneStart = this.world.level.level_end_x - 720;
+        const levelEnd = this.world.level.level_end_x - 50;
+
+        let inEndZone = this.x >= endZoneStart;
+
+        // Bewegung nach rechts
+        if (this.world.keyboard.RIGTH && this.x < levelEnd) {
+            this.moveRight();
         }
 
+        // Bewegung nach links
+        if (this.world.keyboard.LEFT) {
+            if (inEndZone) {
+                // Im Endbereich, aber nicht weiter als der Beginn des Endbereichs
+                if (this.x > endZoneStart) {
+                    this.moveLeft();
+                }
+            } else if (this.x > 25) {
+                // Normale Bewegung, aber nicht weiter als 25 Pixel vom linken Rand
+                this.moveLeft();
+            }
+        }
+
+        // Kamerabewegung
+        if (this.x <= endZoneStart) {
+            // Normale Kamera-Bewegung
+            this.world.camera_x = -this.x + 25;
+        } else {
+            // Kamera bleibt am Anfang des Endbereichs stehen
+            this.world.camera_x = -endZoneStart;
+        }
+
+        // Angriff
         if (this.world.keyboard.SPACE && !this.isAttacking) {
             this.attack();
-            
-            
         }
+
+        // Blocken
         if (this.world.keyboard.E && this.blockEnergy > 0 && !this.isBlocking) {
             this.startBlock();
-            
-            
         }
-        
-        
-                if (this.world.keyboard.LEFT && this.x > 0 ) {
-                    this.moveLeft(true)
-                }
 
-                if (this.world.keyboard.UP && !this.isAboveGround()) {
-                    this.jump();
-                }
+        // Springen
+        if (this.world.keyboard.UP && !this.isAboveGround()) {
+            this.jump();
+        }
 
-                this.world.camera_x = -this.x +25;
-                this.updateBlockStatus();
-            }, 1000/60)
+        // Begrenzung der Charakterbewegung
+        if (this.x < 25) {
+            this.x = 25; // Linke Grenze
+        } else if (this.x > levelEnd) {
+            this.x = levelEnd; // Rechte Grenze
+        } else if (inEndZone && this.x < endZoneStart) {
+            this.x = endZoneStart; // Verhindert das Verlassen des Endbereichs
+        }
+
+        this.updateBlockStatus();
+    }, 1000/60);
         
             setInterval(() => {
 
