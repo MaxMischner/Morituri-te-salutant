@@ -235,7 +235,7 @@ updateBlockStatus() {
         let currentTime = Date.now();
         if (currentTime - this.blockStartTime >= this.blockDuration || this.blockEnergy <= 0) {
             this.isBlocking = false;
-            this.blockActive = false;
+            this.blockActive = false; 
             console.log("Block beendet");
         }
     }

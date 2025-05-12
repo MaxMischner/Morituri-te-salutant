@@ -203,12 +203,7 @@ class MoveabelObject {
         this.playHurtAnimation();
     }
 
-    // Wenn ein Gegner getroffen wird, wird er gestunnt
-    if (this instanceof Enemy) {
-        this.isStunned = true;
-        this.stunTime = Date.now();
-        console.log("Gegner gestunnt!", this.isStunned, this.stunTime);
-    }
+    
 }
     
 
@@ -333,9 +328,6 @@ isBlockingTile(tile) {
            this.y + this.offset.top < tile.y + tile.height;
 }
 
-showStunEffect() {
-    console.log("showStunEffect aufgerufen", this.isStunned, Date.now() - this.stunTime);
-    // Rest der Methode...
-}
+
 
 }

@@ -66,20 +66,19 @@ startAttack() {
 
 
 patrol() {
-    console.log("patrol aufgerufen, isStunned:", this.isStunned);
+    
     if (this.isDead) return;
     
-    if (this.isStunned) {
-        let stunDuration = Date.now() - this.stunTime;
-        console.log("Gegner ist gestunnt, Dauer:", stunDuration);
-        if (stunDuration < 3000) {  // 3 Sekunden Stun-Dauer
-            this.playAnimation(this.IMAGES_HURT, "HURT");  // Zeige Stun-Animation
-            return;
-        } else {
-            console.log("Stun ist vorbei");
-            this.isStunned = false;
-        }
+   if (this.isStunned) {
+    const stunDuration = Date.now() - this.stunTime;
+    if (stunDuration < 3000) {
+        this.playAnimation(this.IMAGES_HURT, "HURT"); // ✓ animiert
+        return; // ↩ nichts anderes machen
+    } else {
+        this.isStunned = false;
     }
+}
+
 
     // Angriff läuft → Angriffsupdate aufrufen
     if (this.attackState !== "idle") {
@@ -151,44 +150,75 @@ hit(target) {
 
 
 isAttackTargetInRange(target) {
-    let distanceX = Math.abs((this.x + this.width / 2) - (target.x + target.width / 2));
+   let facingLeft = this.otherDiretion;
+let inRange = false;
 
-    return distanceX < this.attackRangeValue;
+if (facingLeft) {
+    inRange = this.x >= target.x && this.x - target.x <= this.attackRangeValue;
+} else {
+    inRange = target.x >= this.x && target.x - this.x <= this.attackRangeValue;
+}
+
+return inRange;
+
 }
 showStunEffect() {
-    console.log("showStunEffect aufgerufen", this.isStunned, Date.now() - this.stunTime);
-    if (!this.img) return;
+    if (!this.img || !this.world?.ctx) return;
 
-    let ctx = this.world?.ctx;
-    if (!ctx) return;
-
+    const ctx = this.world.ctx;
     ctx.save();
 
-    // Blinken / Schatten Effekt (ist schon vorhanden)
     ctx.globalAlpha = 0.5 + Math.sin(Date.now() / 100) * 0.5;
     ctx.shadowBlur = 20;
     ctx.shadowColor = "yellow";
-    ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
 
-    // NEU: STUN TEXT
-    ctx.globalAlpha = 1;
-    ctx.shadowBlur = 0;
-    ctx.fillStyle = "yellow";
-    ctx.font = "bold 24px Arial";
-    ctx.textAlign = "center";
-    ctx.fillText("STUN", this.x + this.width / 2, this.y - 10); // Über dem Kopf
-    this.drawStunStars(ctx);
+    if (this.otherDiretion) {
+        ctx.translate(this.x + this.width, this.y);
+        ctx.scale(-1, 1);
+        ctx.drawImage(this.img, 0, 0, this.width, this.height);
+
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "yellow";
+        ctx.font = "bold 24px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("STUN", this.width / 2, -10);
+
+        this.drawStunStars(ctx, true);
+    } else {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+
+        ctx.globalAlpha = 1;
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = "yellow";
+        ctx.font = "bold 24px Arial";
+        ctx.textAlign = "center";
+        ctx.fillText("STUN", this.x + this.width / 2, this.y - 10);
+
+        this.drawStunStars(ctx, false);
+    }
+
     ctx.restore();
 }
 
-drawStunStars(ctx) {
+
+
+drawStunStars(ctx, flipped = false) {
     let time = Date.now() / 200;
     let starCount = 3;
 
     for (let i = 0; i < starCount; i++) {
         let angle = time + (i * (Math.PI * 2 / starCount));
-        let starX = this.x + this.width / 2 + Math.cos(angle) * 30;
-        let starY = this.y - 20 + Math.sin(angle) * 10;
+        let offsetX = Math.cos(angle) * 30;
+        let offsetY = Math.sin(angle) * 10;
+
+        let starX = flipped
+            ? this.width / 2 + offsetX  // Gespiegelte Koordinaten
+            : this.x + this.width / 2 + offsetX;
+
+        let starY = flipped
+            ? -20 + offsetY
+            : this.y - 20 + offsetY;
 
         ctx.beginPath();
         ctx.arc(starX, starY, 5, 0, Math.PI * 2);
@@ -196,4 +226,5 @@ drawStunStars(ctx) {
         ctx.fill();
     }
 }
+
 }

@@ -62,6 +62,7 @@ class World{
     
     
     draw() {
+        this.level.clouds = this.level.clouds.filter(cloud => cloud.x > -cloud.width);
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
 
         this.ctx.translate(this.camera_x,0);
@@ -69,9 +70,13 @@ class World{
         this.addObjektToMap(this.level.backgroundObjects);
         this.addObjektToMap(this.level.groundTiles);
         this.addObjektToMap(this.level.clouds);
+       setTimeout(() => {
+    this.startCloudSpawner();
+}, 5000);
    
         this.addToMap(this.character);
         
+
         
         this.addObjektToMap(this.level.collectableObjects);
         this.addEnemisDirektion(this.level.enemies);
@@ -89,6 +94,7 @@ class World{
     
 
     
+
     let self =this;
     requestAnimationFrame(function () {
         self.draw();
@@ -110,34 +116,35 @@ class World{
         });
     }
 
-    addEnemisDirektion(enemies){
-        enemies.forEach(mo => {
-            if (!mo.img) return;
-            this.ctx.save();
-            
+   addEnemisDirektion(enemies) {
+    enemies.forEach(mo => {
+        if (!mo.img) return;
+
+        this.ctx.save();
+
+        if (mo.isStunned) {
+            // Nur Stun-Effekt zeichnen (inkl. Spiegelung + Bild)
+            mo.showStunEffect();
+        } else {
+            // Normale Gegnerzeichnung (inkl. Spiegelung)
             if (mo.otherDiretion) {
-                // Spiegeln nur wenn otherDiretion true ist
                 this.ctx.translate(mo.x + mo.width, mo.y);
                 this.ctx.scale(-1, 1);
                 this.ctx.drawImage(mo.img, 0, 0, mo.width, mo.height);
             } else {
-                // Normal zeichnen
                 this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
             }
-    
-            // HIER NEU: Wenn gestunnt, Effekt anzeigen (→ genau hier rein!)
-            if (mo.isStunned) {
-                console.log('Enemy is stunned, calling showStunEffect:', mo);
-                mo.showStunEffect();
-            }
-    
-            if (this.debugMode) {
-                this.drawFrame(mo, this.getDebugColor(mo));
-            };
-    
-            this.ctx.restore();
-        });
-    }
+        }
+
+        // Debug-Hitbox
+        if (this.debugMode) {
+            this.drawFrame(mo, this.getDebugColor(mo));
+        }
+
+        this.ctx.restore();
+    });
+}
+
     
     
 
@@ -223,6 +230,37 @@ class World{
     }
     
     
+startCloudSpawner() {
+    let concurrentSpawns = 0;
+
+    const spawnCloud = () => {
+        // Alte Wolken bereinigen
+        this.level.clouds = this.level.clouds.filter(cloud => cloud.x > -cloud.width);
+
+        // Maximal 15 Wolken gesamt UND nicht mehr als 3 gleichzeitig im Spawnprozess
+        if (this.level.clouds.length < 15 && concurrentSpawns < 3) {
+            concurrentSpawns++; // Spawnbeschränkung erhöhen
+
+            let cloud = new Cloud();
+            cloud.x = this.level.level_end_x + Math.random() * 200;
+            cloud.y = 50 + Math.random() * 100;
+            this.level.clouds.push(cloud);
+
+            // Nach kurzer Zeit wieder freigeben
+            setTimeout(() => {
+                concurrentSpawns--;
+            }, 3000); // Nach 1 Sekunde darf wieder gespawnt werden
+        }
+
+        // Nächster Versuch in 20–50 Sekunden
+        let nextSpawn = 20000 + Math.random() * 30000;
+        setTimeout(spawnCloud, nextSpawn);
+    };
+
+    spawnCloud(); // Erste Wolke starten
+}
+
+
 
     
     
