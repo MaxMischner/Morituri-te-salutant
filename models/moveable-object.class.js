@@ -135,10 +135,11 @@ class MoveabelObject {
             height: target.height - target.offset.top - target.offset.bottom
         };
 
-        let isHit = hitbox.x < targetBox.x + targetBox.width &&
-                    hitbox.x + hitbox.width > targetBox.x &&
-                    hitbox.y < targetBox.y + targetBox.height &&
-                    hitbox.y + hitbox.height > targetBox.y;
+        let tolerance = 5;  // 5 Pixel Toleranz
+        let isHit = (hitbox.x - tolerance) < (targetBox.x + targetBox.width) &&
+                    (hitbox.x + hitbox.width + tolerance) > targetBox.x &&
+                    (hitbox.y - tolerance) < (targetBox.y + targetBox.height) &&
+                    (hitbox.y + hitbox.height + tolerance) > targetBox.y;
 
         if (isHit) {
             console.log("Treffer erkannt!", target);
@@ -163,12 +164,35 @@ class MoveabelObject {
         return isHit;
     }
 
-    takeDamage(amount = 20) {
-    if (this.isDead || this.isBlocking) return;
-
+    takeDamage(amount = 20, attacker = null) {
     console.log(`${this.constructor.name} takeDamage aufgerufen`);
+    if (this.isDead) return;
 
-    // Wenn nicht geblockt, dann nur Schaden
+   if (this instanceof Character && this.isBlocking) {
+    console.log("Charakter hat den Angriff geblockt!");
+    this.blockEnergy--;
+    if (this.blockEnergy <= 0) {
+        this.isBlocking = false;
+        console.log("Blockenergie aufgebraucht!");
+    }
+
+    // Angreifer wird gestunnt
+    if (attacker instanceof Enemy) {
+        attacker.isStunned = true;
+        attacker.stunTime = Date.now();
+        console.log("Angreifer wurde gestunnt (über takeDamage)", attacker);
+    }
+
+    return; // Kein Schaden bei erfolgreichem Block
+}
+
+
+    if (this instanceof Enemy && this.isStunned) {
+        console.log("Gegner ist gestunnt und kann nicht angreifen!");
+        return; // Gestunnter Gegner verursacht keinen Schaden
+    }
+
+    // Wenn nicht geblockt, dann Schaden
     console.log("Treffer! Schaden verursacht:", amount);
     this.energy -= amount;
 
@@ -177,6 +201,13 @@ class MoveabelObject {
         this.die();
     } else {
         this.playHurtAnimation();
+    }
+
+    // Wenn ein Gegner getroffen wird, wird er gestunnt
+    if (this instanceof Enemy) {
+        this.isStunned = true;
+        this.stunTime = Date.now();
+        console.log("Gegner gestunnt!", this.isStunned, this.stunTime);
     }
 }
     

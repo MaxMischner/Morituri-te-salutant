@@ -9,8 +9,8 @@ class Character extends MoveabelObject {
     blockHoldTime = 0;
     blockMaxHoldTime = 60000; 
    attackRange = {
-    offsetX: 70,  // Erhöhen Sie diesen Wert
-    width: 100,   // Erhöhen Sie diesen Wert
+    offsetX: 0,  // Erhöhen Sie diesen Wert
+    width: 0,   // Erhöhen Sie diesen Wert
 };
 
     offset = {
@@ -224,6 +224,7 @@ IMAGES_DEAD = [
     startBlock() {
     if (!this.isBlocking && this.blockEnergy > 0) {
         this.isBlocking = true;
+         this.blockActive = true;
         this.blockStartTime = Date.now();
         console.log("Block gestartet");
     }
@@ -234,6 +235,7 @@ updateBlockStatus() {
         let currentTime = Date.now();
         if (currentTime - this.blockStartTime >= this.blockDuration || this.blockEnergy <= 0) {
             this.isBlocking = false;
+            this.blockActive = false;
             console.log("Block beendet");
         }
     }

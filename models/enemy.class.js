@@ -6,7 +6,7 @@ class Enemy extends MoveabelObject {
     }
     direction = -1;
     IMAGES_IDEL = [];
-    attackCooldown = 4000;  // In Millisekunden (1 Sekunde)
+    attackCooldown = 2000;  // In Millisekunden (1 Sekunde)
 lastAttackTime = 0;
 
 
@@ -19,7 +19,7 @@ attackDuration = {
     strike: 500,
     cooldown: 3000
 };
-attackRangeValue = 70;
+attackRangeValue = 45;
 
 updateAttack() {
     if (this.attackState === "idle") return;
@@ -40,7 +40,7 @@ updateAttack() {
 
         if (elapsed >= this.attackDuration.strike) {
             if (this.isAttackTargetInRange(this.world.character)) {
-                this.world.character.takeDamage(20);
+                this.world.character.takeDamage(20, this);
             }
             this.attackState = "cooldown";
             this.attackTimer = Date.now();
@@ -68,18 +68,18 @@ startAttack() {
 patrol() {
     console.log("patrol aufgerufen, isStunned:", this.isStunned);
     if (this.isDead) return;
+    
     if (this.isStunned) {
         let stunDuration = Date.now() - this.stunTime;
         console.log("Gegner ist gestunnt, Dauer:", stunDuration);
-        if (stunDuration < 3000) { // 3 Sekunden Stun
-            this.playAnimation(this.IMAGES_IDEL, "IDLE");
+        if (stunDuration < 3000) {  // 3 Sekunden Stun-Dauer
+            this.playAnimation(this.IMAGES_HURT, "HURT");  // Zeige Stun-Animation
             return;
         } else {
             console.log("Stun ist vorbei");
             this.isStunned = false;
         }
     }
-    
 
     // Angriff läuft → Angriffsupdate aufrufen
     if (this.attackState !== "idle") {
@@ -118,7 +118,35 @@ tryAttack(target) {
     }
 }
 
+hit(target) {
+    if (!this.isAttackFrameActive()) {
+        console.log("Kein aktiver Angriffsframe");
+        return false;
+    }
 
+    console.log("Enemy hit-Methode aufgerufen", target);
+    
+    // Hitbox-Berechnung wie zuvor...
+
+    if (isHit) {
+        console.log("Treffer erkannt!", target);
+        if (target instanceof Character) {
+            if (target.isBlocking) {
+                console.log("Charakter blockt den Angriff!");
+                this.isStunned = true;
+                this.stunTime = Date.now();
+                console.log("Gegner wurde gestunnt!", this.isStunned, this.stunTime);
+            } else {
+                console.log("Charakter nimmt Schaden!");
+                target.takeDamage(20);
+            }
+        }
+    } else {
+        console.log("Kein Treffer");
+    }
+
+    return isHit;
+}
 
 
 

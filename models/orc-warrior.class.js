@@ -20,8 +20,8 @@ class OrkWorrier extends Enemy {
         right: 20
     }
     attackRange = {
-        offsetX: 5,
-        width: 20
+        offsetX: 0,
+        width: 0,
     };
     
     IMAGES_HURT = [
@@ -62,7 +62,8 @@ class OrkWorrier extends Enemy {
     ]
 
     constructor(){
-        super().loadImage('img/Orcs/Orc_Warrior/Idle/tile000.png')
+        super();
+        this.loadImage('img/Orcs/Orc_Warrior/Idle/tile000.png')
         this.x = 400 + Math.random() * 300;
         this.y = 365;
         this.speed = 0.15 + Math.random() * 0.25;
