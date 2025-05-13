@@ -9,7 +9,9 @@ class MoveabelObject {
     speed = 0.15;
     otherDiretion = false;
     energy = 100;
-    isDead = false;
+    isHurt = false;
+    isDead = false; // wird bereits gesetzt
+
     animationTimer = 0;
     animationInterval = 100;
     isAttacking = false;
@@ -75,8 +77,10 @@ class MoveabelObject {
     }
 
     jump() {
-        this.speedY = 25;
-    }
+    if (this.isDead) return;
+    this.speedY = 25;
+}
+
 
     
     moveLeft(blockCheck = true) {
@@ -196,14 +200,21 @@ class MoveabelObject {
     console.log("Treffer! Schaden verursacht:", amount);
     this.energy -= amount;
 
-    if (this.energy <= 0) {
-        this.energy = 0;
-        this.die();
-    } else {
-        this.playHurtAnimation();
-    }
+if (this.energy <= 0) {
+    this.energy = 0;
+    this.die();
+} else {
+    this.isHurt = true;
+    this.playHurtAnimation();
+    this.onHitEffect();
 
-    
+    // Rücksetzen nach Ende der Hurt-Animation
+    setTimeout(() => {
+        this.isHurt = false;
+    }, this.IMAGES_HURT.length * this.animationSpeeds.HURT);
+}
+
+    return;
 }
     
 
@@ -219,7 +230,7 @@ class MoveabelObject {
     die() {
         this.isDead = true;
         this.speed = 0;
-        this.playDeathAnimation();
+        this.playDeathAnimation(this.IMAGES_DEAD, 'DEAD'  );
         console.log(`${this.constructor.name} is dead.`);
     }
     

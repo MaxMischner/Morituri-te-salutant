@@ -2,7 +2,9 @@ class Character extends MoveabelObject {
     world;
     speed = 10;
     score = 0;
-    blockEnergy = 11;
+    blockEnergy = 5;
+    score = 0;
+
     isBlocking = false;
     blockFrame = 0;
     blockActive = false;
@@ -117,8 +119,20 @@ IMAGES_DEAD = [
 
     
     animate(){
+        if (this.isDead) {
+    this.playAnimation(this.IMAGES_DEAD, "DEAD");
+    
+    return;
+}
+
+
 
         setInterval(() => {
+            if (this.y > 600 && !this.isDead) {
+    this.energy = 0;
+    this.die(); // oder this.isDead = true;
+    console.log("Charakter ist in ein Loch gefallen!");}
+
         const endZoneStart = this.world.level.level_end_x - 720;
         const levelEnd = this.world.level.level_end_x - 50;
 
@@ -165,6 +179,7 @@ IMAGES_DEAD = [
         if (this.world.keyboard.UP && !this.isAboveGround()) {
             this.jump();
         }
+        
 
         // Begrenzung der Charakterbewegung
         if (this.x < 25) {
@@ -207,12 +222,27 @@ IMAGES_DEAD = [
                     this.playAnimation(this.IMAGES_JUMP, "JUMP");
                 } 
                 else {
-                    if (this.world.keyboard.RIGTH || this.world.keyboard.LEFT) {
-                        this.playAnimation(this.IMAGES_RUN, "RUN");
-                    } else {
-                        this.playAnimation(this.IMAGES_IDEL,"IDLE");
+                        if (this.isHurt) {
+                            this.playAnimation(this.IMAGES_HURT, "HURT");
+                        } else if (this.isDead) {
+    if (!this.deadAnimationPlayed) {
+        this.playAnimation(this.IMAGES_DEAD, "DEAD");
+
+        setTimeout(() => {
+            this.currentImage = this.IMAGES_DEAD.length - 1; // Letztes Frame festsetzen
+            this.img = this.imageCache[this.IMAGES_DEAD[this.currentImage]];
+            this.deadAnimationPlayed = true;
+        }, this.IMAGES_DEAD.length * 100); // 100 ms pro Frame (anpassen je nach Speed)
+    }
+    return; // Keine weitere Aktion
+
+                        } else if (this.world.keyboard.RIGTH || this.world.keyboard.LEFT) {
+                            this.playAnimation(this.IMAGES_RUN, "RUN");
+                        } else {
+                            this.playAnimation(this.IMAGES_IDEL,"IDLE");
+                        }
                     }
-                }
+
             
             }, 100);
             

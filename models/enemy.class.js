@@ -95,6 +95,16 @@ patrol() {
         }
         return;
     }
+    // Prüfen, ob Boden vor dem Gegner vorhanden ist
+const tileAhead = this.getGroundTileAhead();
+
+if (!tileAhead) {
+    // Kein Boden vor dem Gegner → Umdrehen
+    this.turning = true;
+    this.turnTimer = Date.now();
+    return;
+}
+
 
     this.x += this.direction * this.speed;
     this.otherDiretion = this.direction < 0;
@@ -226,5 +236,22 @@ drawStunStars(ctx, flipped = false) {
         ctx.fill();
     }
 }
+
+getGroundTileAhead() {
+    const checkX = this.x + (this.direction * this.width / 2);
+    const checkY = this.y + this.height + 5; // etwas unter dem Gegner
+
+    if (!this.world?.level?.groundTiles) return null;
+
+    return this.world.level.groundTiles.find(tile => {
+        return (
+            checkX + this.width / 2 >= tile.x &&
+            checkX <= tile.x + tile.width &&
+            checkY >= tile.y &&
+            checkY <= tile.y + tile.height
+        );
+    });
+}
+
 
 }

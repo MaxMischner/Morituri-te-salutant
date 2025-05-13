@@ -1,8 +1,9 @@
 const level1= new Level(
      [
-        new OrkWorrier(),
-        new OrkWorrier(),
-        new OrkWorrier(),
+        new OrkWorrier(400,350),
+        new OrkWorrier(450,350),
+        new OrkWorrier(1800,200),
+        new OrcShamane(1024,350),
         new Endboss()
     ],
      [
@@ -72,11 +73,20 @@ const level1= new Level(
         new BackgroundObjekt('../img/Plattform/2 Background/Layers/7.png',3600,0),
     ],
     [
-        new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 110, 400),
+        
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 0, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 32, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 64, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 96, 450),
+
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 110, 418),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 110, 386),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 142, 386),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 142, 418),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 142, 354),
+            
+
+
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 128, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 160, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 192, 450),
@@ -96,32 +106,48 @@ const level1= new Level(
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 640, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 672, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 704, 450),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 736, 450),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 768, 450),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 800, 400),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 832, 400),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 864, 400),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 896, 400),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 928, 400),
+
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 704, 418),
+
+           
+
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 800, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 832, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 864, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 896, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 928, 354),
+
+
             // 928 - 1500 → Standardboden + kleine Plattformen
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 928, 450),
+
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 960, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 992, 450),
-// Loch
-// Loch
+
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1024, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1056, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1088, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1120, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1152, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1184, 450),
+
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 960, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 992, 322),
+
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1024, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1056, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1088, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1120, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1152, 322),
+
 // Plattform zum Springen (y = 400)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1216, 400),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1248, 400),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1216, 450),
+
 // Boden geht weiter (y = 450)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1280, 450),
+
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1312, 450),
 // Loch (Springpassage)
 // Loch
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1376, 450),
+
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1408, 450),
 
 // 1500 - 2000 → Schluchten und Plattformen
@@ -129,18 +155,22 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1408, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1472, 350),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1504, 350),
 // tiefer Boden → SCHLUCHTE (y = 500 → für Orks reinspawnen möglich!)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1536, 500),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1568, 500),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1600, 500),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1536, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1568, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1600, 300),
 // hohe Plattform (y = 300 → Sprungzone)
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1632, 300),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1664, 300),
 // Boden normalisieren
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1696, 450),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1728, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1696, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1728, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1760, 300),
 // kleine Schlucht (Lücke zum Springen)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1792, 450),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1824, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1792, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1824, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1856, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1888, 268),
+
 
 // 2000 - 2300 → Normale Plattformen vor dem Boss
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1952, 450),
@@ -228,6 +258,7 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
 [
     new Blockstone('../img/Collectebals/PNG/tile000.png',200,300),
     new Blockstone('../img/Collectebals/PNG/shiny/16.png',400,300),
-    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',250,350)
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',250,350),
+    new Blockstone('../img/Collectebals/PNG/tile000.png',970,400),
 ],
 );

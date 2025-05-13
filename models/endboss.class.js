@@ -2,6 +2,11 @@ class Endboss extends Enemy{
 
     height = 200;
     width = 200; 
+isActive = false;
+hasIntroStarted = false;
+bossNameOpacity = 0;
+bossNameSize = 80;
+bossNameY = 0;
 
     offset = {
         top: 40,
@@ -74,6 +79,11 @@ class Endboss extends Enemy{
         this.y = 200;
         this.speed = 0;
         this.isActive = false;
+        this.bossNameY = 200;
+        this.bossNameSize = 80;
+        this.bossNameOpacity = 0;
+
+
 
        this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_IDEL);
@@ -83,10 +93,14 @@ class Endboss extends Enemy{
         
         this.applyGravity(); 
 
-        this.animate()
+        
     }
 
    animate() {
+    if (this.world.character.x > this.world.level_end_x && !this.hasIntroStarted) {
+    this.triggerIntro();
+}
+
     setInterval(() => {
         this.updateBossBehavior();
     }, 1000 / 60);
@@ -145,6 +159,25 @@ updateBossBehavior() {
         this.startAttack(); // aus Enemy
     }
 }
+
+triggerIntro() {
+    this.hasIntroStarted = true;
+    this.isActive = true;
+    this.world.character.canMove = false;
+
+    let steps = 30;
+    let stepSize = 3;
+
+    const interval = setInterval(() => {
+        if (steps-- > 0) {
+            this.x -= stepSize; // Minotauros läuft zum Spieler
+        } else {
+            clearInterval(interval);
+            this.startBossIntroText();
+        }
+    }, 50);
+}
+
 
 
 }

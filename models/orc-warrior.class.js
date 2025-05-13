@@ -61,11 +61,11 @@ class OrkWorrier extends Enemy {
         'img/Orcs/Orc_Warrior/Idle/tile004.png'
     ]
 
-    constructor(){
+    constructor(x,y){
         super();
         this.loadImage('img/Orcs/Orc_Warrior/Idle/tile000.png')
-        this.x = 400 + Math.random() * 300;
-        this.y = 365;
+        this.x = x;
+        this.y = y;
         this.speed = 0.15 + Math.random() * 0.25;
     
         this.loadImages(this.IMAGES_RUN);
