@@ -2,11 +2,16 @@ let canvas;
 let world ;
 let keyboard = new Keyboard();
 
+
+
 function init() {
-    canvas = document.getElementById("canvas")
+    canvas = document.getElementById("canvas");
+    keyboard = new Keyboard();
     world = new World(canvas, keyboard);
 
-}
+     world.start();
+    }
+
 
 window.addEventListener("keydown", (e) => {
     if (e.keyCode == 68) { // D

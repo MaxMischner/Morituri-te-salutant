@@ -79,8 +79,9 @@ bossNameY = 0;
         this.y = 200;
         this.speed = 0;
         this.isActive = false;
-        this.bossNameY = 200;
-        this.bossNameSize = 80;
+        this.bossNameSize = 48; // statt 80
+        this.bossNameY = 180;   // etwas höher als vorher, da kleiner
+
         this.bossNameOpacity = 0;
 
 
