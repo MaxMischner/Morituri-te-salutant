@@ -118,11 +118,11 @@ class MoveabelObject {
     }
     hit(target) {
         if (!this.isAttackFrameActive()) {
-            console.log("Kein aktiver Angriffsframe");
+            
             return false;
         }
 
-        console.log("hit-Methode aufgerufen", target);
+        
         let hitbox = {
             x: this.otherDiretion 
                 ? this.x - this.attackRange.offsetX 
@@ -146,19 +146,19 @@ class MoveabelObject {
                     (hitbox.y + hitbox.height + tolerance) > targetBox.y;
 
         if (isHit) {
-            console.log("Treffer erkannt!", target);
+            
             if (target instanceof Character) {
                 if (target.isBlocking) {
-                    console.log("Charakter blockt den Angriff!");
+                    
                     this.isStunned = true;
                     this.stunTime = Date.now();
-                    console.log("Angreifer (this) wurde gestunnt!", this.isStunned, this.stunTime);
+                    
                 } else {
-                    console.log("Charakter nimmt Schaden!");
+                    
                     target.takeDamage(20);
                 }
             } else if (target instanceof Enemy) {
-                console.log("Gegner nimmt Schaden!");
+                
                 target.takeDamage(20);
             }
         } else {
@@ -169,22 +169,22 @@ class MoveabelObject {
     }
 
     takeDamage(amount = 20, attacker = null) {
-    console.log(`${this.constructor.name} takeDamage aufgerufen`);
+    
     if (this.isDead) return;
 
    if (this instanceof Character && this.isBlocking) {
-    console.log("Charakter hat den Angriff geblockt!");
+   
     this.blockEnergy--;
     if (this.blockEnergy <= 0) {
         this.isBlocking = false;
-        console.log("Blockenergie aufgebraucht!");
+        
     }
 
     // Angreifer wird gestunnt
     if (attacker instanceof Enemy) {
         attacker.isStunned = true;
         attacker.stunTime = Date.now();
-        console.log("Angreifer wurde gestunnt (über takeDamage)", attacker);
+       
     }
 
     return; // Kein Schaden bei erfolgreichem Block
@@ -192,12 +192,12 @@ class MoveabelObject {
 
 
     if (this instanceof Enemy && this.isStunned) {
-        console.log("Gegner ist gestunnt und kann nicht angreifen!");
+        
         return; // Gestunnter Gegner verursacht keinen Schaden
     }
 
     // Wenn nicht geblockt, dann Schaden
-    console.log("Treffer! Schaden verursacht:", amount);
+    
     this.energy -= amount;
 
 if (this.energy <= 0) {

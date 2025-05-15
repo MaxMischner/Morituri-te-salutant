@@ -14,14 +14,12 @@ class UIRenderer {
    
 
 
-    isInside(x, y, rect) {
-        return (
-            x >= rect.x &&
-            x <= rect.x + rect.width &&
-            y >= rect.y &&
-            y <= rect.y + rect.height
-        );
-    }
+   isInside(x, y, element) {
+    return x >= element.x && 
+           x <= element.x + element.width && 
+           y >= element.y && 
+           y <= element.y + element.height;
+}
 
     drawAll() {
         this.healthBarRenderer.draw();

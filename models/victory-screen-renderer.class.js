@@ -6,6 +6,10 @@ class VictoryScreenRenderer {
     draw() {
         const boss = this.world.level.enemies.find(e => e instanceof Endboss);
         if (!boss || !boss.isDead) return;
+        if (!this.victoryStateSet) {
+        
+        this.victoryStateSet = true;
+    }
 
         this.prepareContext();
         this.drawVictoryOverlay();
