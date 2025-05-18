@@ -1,9 +1,16 @@
 const level1= new Level(
      [
-        new OrkWorrier(400,350),
+        
         new OrkWorrier(450,350),
         new OrkWorrier(1800,200),
+        new OrkWorrier(1700,200),
+        new OrcShamane(2400,350),
         new OrcShamane(1024,350),
+        new OrkWorrier(2700,200),
+        new OrcShamane(2900,200),
+        new OrkWorrier(2950,350),
+        new OrkWorrier(3000,350),
+        new OrkWorrier(3050,350),
         new Endboss()
     ],
      [
@@ -140,15 +147,16 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1120, 322),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1152, 322),
 
 // Plattform zum Springen (y = 400)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1216, 450),
+
 
 // Boden geht weiter (y = 450)
 
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1312, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1344, 450),
 // Loch (Springpassage)
 // Loch
 
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1408, 450),
+
 
 // 1500 - 2000 → Schluchten und Plattformen
 // Hohe Plattform (y = 350)
@@ -169,14 +177,17 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1760, 300),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1792, 300),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1824, 300),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1856, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1888, 268),
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1888, 300),
 
 
 // 2000 - 2300 → Normale Plattformen vor dem Boss
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1952, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1984, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2016, 450),
-// kleiner Sprungbereich (Loch)
+
+new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2048, 450),
+
+
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2080, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2112, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2144, 450),
@@ -198,10 +209,9 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2588, 450),
 // 2600 - 3000 → Hohe Plattformen und Schluchten
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2620, 350),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
-
-// Hohe Plattformen (y = 350)
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2724, 350),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2756, 350),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2684, 350),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2716, 350),
+    
 
     // Höher Plattform (y = 300)
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2820, 300),
@@ -209,6 +219,8 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2884, 300),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2916, 300),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2948, 300),
+
+
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2980, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3012, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3044, 450),
@@ -220,9 +232,7 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3236, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3268, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3300, 450),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3332, 450),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3364, 450),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3396, 450),
+   
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3428, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3460, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3492, 450),
@@ -256,9 +266,47 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
     
     ],
 [
-    new Blockstone('../img/Collectebals/PNG/tile000.png',200,300),
-    new Blockstone('../img/Collectebals/PNG/shiny/16.png',400,300),
-    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',250,350),
+    new Blockstone('../img/Collectebals/PNG/tile000.png',200,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',250,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',500,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',532,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',564,400),
+    
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1034,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1002,400),
     new Blockstone('../img/Collectebals/PNG/tile000.png',970,400),
+    new Blockstone('../img/Collectebals/PNG/tile000.png',910,315),
+
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1024,270),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1056,270),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1088,270),
+
+    new Blockstone('../img/Collectebals/PNG/tile000.png',1344,400),
+
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1848,260),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1816,260),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1784,260),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1752,260),
+    new Blockstone('../img/Collectebals/PNG/tile000.png',1875,260),
+
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',2880,260),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',2912,260),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',2944,260),
+
+    new Blockstone('../img/Collectebals/PNG/tile000.png',1950,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',3000,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',3032,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',3064,400),
+    new Blockstone('../img/Collectebals/PNG/tile000.png',3096,400),
+
+    new Blockstone('../img/Collectebals/PNG/tile000.png',3432,400),
+    new Blockstone('../img/Collectebals/PNG/tile000.png',3464,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',3496,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',3528,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',3560,400),
+    new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',3592,400),
+
+
+
 ],
 );

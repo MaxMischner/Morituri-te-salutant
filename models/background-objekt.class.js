@@ -10,6 +10,7 @@ class BackgroundObjekt extends MoveabelObject {
         
         this.x = x;
         this.y = y;
+         
 
     }
 }

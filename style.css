@@ -1,9 +1,14 @@
-canvas{
-    background-color: black;
+body{
+    margin: 0;
 }
 
 .main-container{
+    width: 100%;
+    height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-image: url('img/Plattform/2 Background/Background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
 }

@@ -104,6 +104,7 @@ class MoveabelObject {
     attack() {
         this.isAttacking = true;
         this.currentImage = 0; // Animation von vorne starten
+        soundManager.play("attack");
     
         // Zeit steuert wann der Angriff endet
         setTimeout(() => {
@@ -202,7 +203,8 @@ class MoveabelObject {
 
 if (this.energy <= 0) {
     this.energy = 0;
-    this.die();
+    this.die("deathEnemy");
+    
 } else {
     this.isHurt = true;
     this.playHurtAnimation();
@@ -227,10 +229,11 @@ if (this.energy <= 0) {
         }, 200);
     }
 
-    die() {
+    die(target) {
         this.isDead = true;
         this.speed = 0;
         this.playDeathAnimation(this.IMAGES_DEAD, 'DEAD'  );
+        soundManager.play(target);
         console.log(`${this.constructor.name} is dead.`);
     }
     
