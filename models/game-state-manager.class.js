@@ -1,11 +1,13 @@
 class GameStateManager {
+    currentState;
+    
     constructor(world) {
         this.world = world;
-        this.currentState = 'menu'; // Mögliche Zustände: 'menu', 'playing', 'paused', 'gameOver', 'victory'
+        this.currentState = 'start'; // Mögliche Zustände: 'menu', 'playing', 'paused', 'gameOver', 'victory'
     }
 
     startGameWithCharacter(characterName) {
-        this.currentState = 'playing';
+        this.currentState = this.setCurrentState('playing');
         this.world.gameStarted = true;
 
         if (characterName === "Hero 1") {
@@ -17,6 +19,10 @@ class GameStateManager {
         this.world.level.character = this.world.character;
         this.world.setWorld();
         this.world.character.animate();
+
+         if (soundManager.enabled) {
+        soundManager.music.play();
+    }
     }
 
     restartGame() {
@@ -50,9 +56,10 @@ class GameStateManager {
         }
     }
 
-    getCurrentState() {
-        return this.currentState;
-    }
+    setCurrentState(state) {
+    return this.currentState = state;
+}
+
 
     // Weitere Methoden können hier hinzugefügt werden
 }

@@ -11,7 +11,9 @@ class MoveabelObject {
     energy = 100;
     isHurt = false;
     isDead = false; // wird bereits gesetzt
+    invincibilityDuration = 1000;
 
+    
     animationTimer = 0;
     animationInterval = 100;
     isAttacking = false;
@@ -37,6 +39,8 @@ class MoveabelObject {
 
     speedY = 0;
     acceleration = 2.5;
+
+    
 
     applyGravity(){
         setInterval(() => {
@@ -79,6 +83,7 @@ class MoveabelObject {
     jump() {
     if (this.isDead) return;
     this.speedY = 25;
+    soundManager.play("jump");
 }
 
 
@@ -102,79 +107,108 @@ class MoveabelObject {
     }
     
     attack() {
-        this.isAttacking = true;
-        this.currentImage = 0; // Animation von vorne starten
-        soundManager.play("attack");
-    
-        // Zeit steuert wann der Angriff endet
-        setTimeout(() => {
-            this.isAttacking = false;
-        }, 500); 
-    }
+    if (this.isAttacking || this.attackOnCooldown) return;
+
+    this.isAttacking = true;
+    this.attackOnCooldown = true;
+    this.currentImage = 0;
+
+    soundManager.play("attack");
+
+    setTimeout(() => {
+        this.isAttacking = false;
+    }, 500);
+
+    setTimeout(() => {
+        this.attackOnCooldown = false;
+    }, 800); // 0.8 Sekunde bis nächster Angriff erlaubt ist
+}
+
 
     isAttackFrameActive() {
         if (!this.isAttacking) return false;
         let i = this.currentImage % this.IMAGES_ATTACK.length;
         return i >= this.attackHitFrame && i <= this.attackHitFrame + 2; // Beispiel: 3 aktive Frames
     }
-    hit(target) {
-        if (!this.isAttackFrameActive()) {
-            console.log("Kein aktiver Angriffsframe");
+  hit(target) {
+    if (!this.isAttackFrameActive()) {
+        console.log("Kein aktiver Angriffsframe");
+        return false;
+    }
+
+    // 👉 WEG mit this.alreadyHit – das ist global und falsch
+    console.log("hit-Methode aufgerufen", target);
+
+    let hitbox = {
+        x: this.otherDiretion 
+            ? this.x - this.attackRange.offsetX 
+            : this.x + this.width,
+        y: this.y + this.offset.top,
+        width: this.attackRange.width,
+        height: this.height - this.offset.top - this.offset.bottom
+    };
+
+    let targetBox = {
+        x: target.x + target.offset.left,
+        y: target.y + target.offset.top,
+        width: target.width - target.offset.left - target.offset.right,
+        height: target.height - target.offset.top - target.offset.bottom
+    };
+
+    let tolerance = 5;
+    let isHit = (hitbox.x - tolerance) < (targetBox.x + targetBox.width) &&
+                (hitbox.x + hitbox.width + tolerance) > targetBox.x &&
+                (hitbox.y - tolerance) < (targetBox.y + targetBox.height) &&
+                (hitbox.y + hitbox.height + tolerance) > targetBox.y;
+
+    if (isHit) {
+        console.log("Treffer erkannt!", target);
+
+        // 🧠 NEU: pro Ziel prüfen, ob es bereits getroffen wurde
+        if (target.alreadyHit) {
+            console.log("Ziel wurde kürzlich getroffen, überspringe.");
             return false;
         }
 
-        console.log("hit-Methode aufgerufen", target);
-        let hitbox = {
-            x: this.otherDiretion 
-                ? this.x - this.attackRange.offsetX 
-                : this.x + this.width,
-            y: this.y + this.offset.top,
-            width: this.attackRange.width,
-            height: this.height - this.offset.top - this.offset.bottom
-        };
+        target.alreadyHit = true;
+        setTimeout(() => {
+            target.alreadyHit = false;
+            console.log("Ziel wieder verwundbar:", target);
+        }, 500);
 
-        let targetBox = {
-            x: target.x + target.offset.left,
-            y: target.y + target.offset.top,
-            width: target.width - target.offset.left - target.offset.right,
-            height: target.height - target.offset.top - target.offset.bottom
-        };
-
-        let tolerance = 5;  // 5 Pixel Toleranz
-        let isHit = (hitbox.x - tolerance) < (targetBox.x + targetBox.width) &&
-                    (hitbox.x + hitbox.width + tolerance) > targetBox.x &&
-                    (hitbox.y - tolerance) < (targetBox.y + targetBox.height) &&
-                    (hitbox.y + hitbox.height + tolerance) > targetBox.y;
-
-        if (isHit) {
-            console.log("Treffer erkannt!", target);
-            if (target instanceof Character) {
-                if (target.isBlocking) {
-                    console.log("Charakter blockt den Angriff!");
-                    this.isStunned = true;
-                    this.stunTime = Date.now();
-                    console.log("Angreifer (this) wurde gestunnt!", this.isStunned, this.stunTime);
-                } else {
-                    console.log("Charakter nimmt Schaden!");
-                    target.takeDamage(20);
-                }
-            } else if (target instanceof Enemy) {
-                console.log("Gegner nimmt Schaden!");
+        if (target instanceof Character) {
+            if (target.isBlocking) {
+                console.log("Charakter blockt den Angriff!");
+                this.isStunned = true;
+                this.stunTime = Date.now();
+                console.log("Angreifer (this) wurde gestunnt!", this.isStunned, this.stunTime);
+            } else {
+                console.log("Charakter nimmt Schaden!");
                 target.takeDamage(20);
             }
-        } else {
-            console.log("Kein Treffer");
+        } else if (target instanceof Enemy) {
+            console.log("Gegner nimmt Schaden!");
+            target.takeDamage(20);
         }
-
-        return isHit;
+    } else {
+        console.log("Kein Treffer");
     }
+
+    return isHit;
+}
+
 
     takeDamage(amount = 20, attacker = null) {
     console.log(`${this.constructor.name} takeDamage aufgerufen`);
-    if (this.isDead) return;
+    if (this.isDead || this.isInvincible) {
+    console.log(`${this.constructor.name} ist unverwundbar oder tot – kein Schaden.`);
+    return;
+}
+
 
    if (this instanceof Character && this.isBlocking) {
     console.log("Charakter hat den Angriff geblockt!");
+    soundManager.play("block");
     this.blockEnergy--;
     if (this.blockEnergy <= 0) {
         this.isBlocking = false;
@@ -200,6 +234,7 @@ class MoveabelObject {
     // Wenn nicht geblockt, dann Schaden
     console.log("Treffer! Schaden verursacht:", amount);
     this.energy -= amount;
+    console.log(`${this.constructor.name} hat noch ${this.energy} Lebenspunkte.`);
 
 if (this.energy <= 0) {
     this.energy = 0;
@@ -209,6 +244,15 @@ if (this.energy <= 0) {
     this.isHurt = true;
     this.playHurtAnimation();
     this.onHitEffect();
+    soundManager.play("hit");
+
+    this.isInvincible = true;
+setTimeout(() => {
+    this.isInvincible = false;
+    console.log(`${this.constructor.name} ist nicht mehr unverwundbar.`);
+}, this.invincibilityDuration);
+
+
 
     // Rücksetzen nach Ende der Hurt-Animation
     setTimeout(() => {
@@ -217,6 +261,8 @@ if (this.energy <= 0) {
 }
 
     return;
+    
+
 }
     
 

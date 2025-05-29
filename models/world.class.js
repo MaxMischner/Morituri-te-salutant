@@ -2,28 +2,32 @@ class World{
    
     character = new Character();
     level = level1;
-    debugMode = true;
+    debugMode = false;
     canvas;
     ctx;
     keyboard;
     isStunned;
     camera_x = 0;
+    currentState;
     
 constructor(canvas, keyboard) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
-    this.ui = new UIRenderer(this);
+   
     this.setWorld();
     this.gameStarted = false;
     this.selectedCharacter = null;
 
     this.initCharacterSelection();
     this.initUIElements();
+     this.ui = new UIRenderer(this);
     this.setupInput();
     this.checkCollisions();
     this.startBackground = new Image();
     this.startBackground.src = "img/Interface/1.png"; 
+    this.gameStateManager = new GameStateManager(this);
+
 
 }
 initCharacterSelection() {
@@ -58,6 +62,15 @@ initUIElements() {
         x: 0, y: 0, width: 200, height: 50,
         visible: false
     };
+
+    this.playButton = {
+    x: this.canvas.width / 2 - 65,
+    y: this.canvas.height / 2 - 25,
+    width: 125,
+    height: 75,
+    visible: true
+};
+
 }
 setupInput() {
     this.canvas.addEventListener("click", (e) => {
@@ -65,18 +78,29 @@ setupInput() {
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        if (!this.gameStarted) {
-            for (let char of this.characterSelection) {
-                if (
-                    x >= char.x && x <= char.x + 100 &&
-                    y >= char.y && y <= char.y + 100
-                ) {
-                    this.selectedCharacter = char.name;
-                    this.startGameWithCharacter(char.name);
-                    return;
-                }
-            }
+        if (this.gameStateManager.currentState === 'start') {
+    if (this.ui.isInside(x, y, this.playButton)) {
+        this.gameStateManager.setCurrentState('menu'); // Wechsel zur Charakterauswahl
+    }
+    return;
+}
+
+
+        if (this.gameStateManager.currentState === 'menu') {
+    for (let char of this.characterSelection) {
+        if (x >= char.x && x <= char.x + 100 &&
+            y >= char.y && y <= char.y + 100) {
+            this.selectedCharacter = char.name;
+            this.gameStateManager.startGameWithCharacter(char.name);
             return;
+        }
+    }
+    return;
+}
+
+        if (this.ui.isInside(x, y, this.ui.soundButton)) {
+         soundManager.toggleSound();
+        return;
         }
 
         // Prüfe Retry-Button
@@ -143,11 +167,19 @@ checkCollectables() {
     // Zeichenfläche leeren
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    // ⬇️ Startmenü zuerst prüfen
-    if (!this.gameStarted) {
+    const currentState = this.gameStateManager.currentState;
+
+    if (currentState === 'start') {
+        this.ui.drawStartScreen();
+        return;
+    }
+
+    if (currentState === 'menu') {
         this.ui.drawStartMenu(this.characterSelection, this.selectedCharacter);
         return;
     }
+
+    if (currentState === 'playing') {
 
     // Kollisionen prüfen
     this.checkCollisions();
@@ -186,6 +218,7 @@ checkCollectables() {
         this.level.enemies.forEach(enemy => this.drawOffsetBox(enemy));
         this.drawOffsetBox(this.character);
     }
+}
 }
 
 
@@ -344,24 +377,15 @@ startCloudSpawner() {
 
 
 restartGame() {
+    soundManager.music.currentTime = 0;
+    if (soundManager.enabled) {
+        soundManager.music.play();
+    }
     window.location.reload(); // oder: init();
 }
 
 
 
-startGameWithCharacter(name) {
-    this.gameStarted = true;
-
-    if (name === "Hero 1") {
-        this.character = new Hero1(); // deine Gladiator_1-Klasse
-    } else if (name === "Hero 2") {
-        this.character = new Hero2(); // ggf. eigene Klasse für Gladiator_2
-    }
-
-    this.level.character = this.character;
-    this.setWorld(); // falls du die Welt neu setzen musst
-    this.character.animate();
-}
 
 start() {
     const loop = () => {

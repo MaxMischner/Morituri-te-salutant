@@ -2,7 +2,8 @@ class OrkWorrier extends Enemy {
 
     height = 80 ;
     width = 80;
-    energy= 2;
+    energy;
+    
     
     lastAttackTime = 0;
     animationSpeeds = {
@@ -67,6 +68,12 @@ class OrkWorrier extends Enemy {
         this.x = x;
         this.y = y;
         this.speed = 0.15 + Math.random() * 0.25;
+        this.energy= 40;
+        
+        this.alreadyHit = false;
+         this.isInvincible = false;
+    this.invincibilityDuration = 1000;
+
     
         this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_IDEL);

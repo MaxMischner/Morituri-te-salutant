@@ -1,8 +1,8 @@
 class Character extends MoveabelObject {
     world;
-    speed = 10;
+    speed = 2;
     score = 0;
-    blockEnergy = 5;
+    blockEnergy = 1;
     score = 0;
 
     isBlocking = false;
@@ -24,9 +24,9 @@ class Character extends MoveabelObject {
 
     animationSpeeds = {
         IDLE: 150,
-        RUN: 120,
-        ATTACK: 60,
-        JUMP: 150,
+        RUN: 25,
+        ATTACK: 80,
+        JUMP: 60,
         BLOCK: 100
     };
     
@@ -49,7 +49,7 @@ class Character extends MoveabelObject {
         setInterval(() => {
             if (this.y > 600 && !this.isDead) {
     this.energy = 0;
-    this.die(); // oder this.isDead = true;
+    this.die(death); 
     console.log("Charakter ist in ein Loch gefallen!");}
 
         const endZoneStart = this.world.level.level_end_x - 720;
@@ -123,7 +123,7 @@ class Character extends MoveabelObject {
                 
                         this.currentImage = 4; // Blockbild bleibt bestehen
                 
-                        if (this.blockHoldTime >= 3000 || this.blockEnergy <= 0) {
+                        if (this.blockHoldTime >= 2000 || this.blockEnergy <= 0) {
                             this.isBlocking = false;
                             this.blockActive = false;
                             this.blockHoldTime = 0;

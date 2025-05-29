@@ -154,6 +154,7 @@ if (
     }, 1000 / 60);
 }
 castLightningAt(targetX) {
+    soundManager.play("magic");
     const bolt = new LightningBolt(targetX, 0, this.world.character); // kommt von oben
     bolt.world = this.world; // LightningBolt braucht Zugriff auf world
     this.world.level.activeEffects.push(bolt);

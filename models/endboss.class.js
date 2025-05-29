@@ -158,6 +158,7 @@ updateBossBehavior() {
     } else {
         // Wenn nahe genug → Angriff starten
         this.startAttack(); // aus Enemy
+        soundManager.play("attack");
     }
 }
 

@@ -2,7 +2,8 @@ class Enemy extends MoveabelObject {
     constructor() {
         super();
         this.isStunned = false;
-        // ... andere Initialisierungen ...
+        this.isInvincible = false;
+        this.invincibilityDuration = 1000;
     }
     direction = -1;
     IMAGES_IDEL = [];
@@ -17,7 +18,7 @@ attackTimer = 0;
 attackDuration = {
     windup: 600,
     strike: 500,
-    cooldown: 3000
+    cooldown: 1500
 };
 attackRangeValue = 45;
 
@@ -95,11 +96,11 @@ patrol() {
         }
         return;
     }
-    // Prüfen, ob Boden vor dem Gegner vorhanden ist
+   
 const tileAhead = this.getGroundTileAhead();
 
 if (!tileAhead) {
-    // Kein Boden vor dem Gegner → Umdrehen
+   
     this.turning = true;
     this.turnTimer = Date.now();
     return;
@@ -135,7 +136,6 @@ hit(target) {
 
     console.log("Enemy hit-Methode aufgerufen", target);
     
-    // Hitbox-Berechnung wie zuvor...
 
     if (isHit) {
         console.log("Treffer erkannt!", target);
