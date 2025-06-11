@@ -17,5 +17,7 @@ class Level {
         
     this.activeEffects = [];
 
+
     }
+
 }

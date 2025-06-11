@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="img\Interface\103.png" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Morituri te salutant</title>
@@ -16,9 +17,34 @@
 
 
     </canvas>
+    <div id="keyboard-controls">
+    <p>
+        Steuerung: <br>
+        A = left &nbsp; | &nbsp;
+        D = right &nbsp; | &nbsp;
+        W = jump &nbsp; | &nbsp;
+        E = block &nbsp; | &nbsp;
+        LEERTASTE = attack
+    </p>
 </div>
-</body>
+</div>
 
+
+
+<div id="mobile-controls-left">
+    <div id="leftButton" class="control-button">←</div>
+    <div id="jumpButton" class="control-button">⤒</div>
+    <div id="rightButton" class="control-button">→</div>
+    
+</div>
+
+<div id="mobile-controls-right">
+    <div id="attackButton" class="control-button">⚔️</div>
+    <div id="blockButton" class="control-button">🛡️</div>
+</div>
+
+</body>
+<script src="js/script.js"></script>
 <script src="models/world.class.js"></script>
 <script src="models/game-state-manager.class.js"></script>
 <script src="models/sound-manager.class.js"></script>

@@ -88,9 +88,10 @@ class OrkWorrier extends Enemy {
     
     
 
-    animate() {
-        setInterval(() => {
-            this.patrol();
-        }, 1000 / 60);
-    }
+ animate() {
+    this.setStoppableInterval(() => {
+        this.patrol();
+    }, 1000 / 60);
+}
+
 }    

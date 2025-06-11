@@ -9,7 +9,7 @@ class Character extends MoveabelObject {
     blockFrame = 0;
     blockActive = false;
     blockHoldTime = 0;
-    blockMaxHoldTime = 60000; 
+    blockMaxHoldTime = 10000; 
    attackRange = {
     offsetX: 0,  // Erhöhen Sie diesen Wert
     width: 0,   // Erhöhen Sie diesen Wert
@@ -32,6 +32,8 @@ class Character extends MoveabelObject {
     
    constructor(){
         super();
+        this.movementInterval = null;
+    this.animationInterval = null;
         
         
    }
@@ -46,10 +48,10 @@ class Character extends MoveabelObject {
 
 
 
-        setInterval(() => {
+        this.setStoppableInterval(() => {
             if (this.y > 600 && !this.isDead) {
     this.energy = 0;
-    this.die(death); 
+    this.die(); 
     console.log("Charakter ist in ein Loch gefallen!");}
 
         const endZoneStart = this.world.level.level_end_x - 720;
@@ -112,7 +114,7 @@ class Character extends MoveabelObject {
         this.updateBlockStatus();
     }, 1000/60);
         
-            setInterval(() => {
+             this.setStoppableInterval(() => {
 
                 if (this.isBlocking) {
                     this.playAnimation(this.IMAGES_BLOCK, "BLOCK");
@@ -123,7 +125,7 @@ class Character extends MoveabelObject {
                 
                         this.currentImage = 4; // Blockbild bleibt bestehen
                 
-                        if (this.blockHoldTime >= 2000 || this.blockEnergy <= 0) {
+                        if (this.blockHoldTime >= 3000 || this.blockEnergy <= 0) {
                             this.isBlocking = false;
                             this.blockActive = false;
                             this.blockHoldTime = 0;
@@ -189,4 +191,7 @@ updateBlockStatus() {
         }
     }
 }
+
+
+
 }

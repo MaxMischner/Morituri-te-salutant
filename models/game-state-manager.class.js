@@ -25,12 +25,7 @@ class GameStateManager {
     }
     }
 
-    restartGame() {
-        this.currentState = 'menu';
-        this.world.gameStarted = false;
-        this.world.character = null;
-        this.victoryStateSet = false;
-    }
+  
 
     setVictory() {
         console.log("Setting game state to victory");
@@ -61,5 +56,65 @@ class GameStateManager {
 }
 
 
-    // Weitere Methoden können hier hinzugefügt werden
+resetLevelAndRestartCharacter() {
+    // Nur: Aktuell gewählten Character merken
+    const selectedCharacter = this.selectedCharacter || "Hero 1"; // fallback falls undefined
+
+    // Dann → kompletten neuen Gameflow starten
+    this.restartGameWithSelectedCharacter(selectedCharacter);
+}
+
+
+restartGameWithSelectedCharacter(characterName) {
+    this.selectedCharacter = characterName; // "Hero 1" oder "Hero 2"
+    this.characterSelection = true;
+    this.currentState = 'playing';
+
+    // → rufe dein init/startGame erneut auf:
+    init(); // oder startGame(), je nachdem wie du es gebaut hast
+}
+
+
+setWorld(world) {
+    this.world = world;
+}
+
+
+
+
+
+
+
+
+
+clearImageCache() {
+    for (const key in MoveabelObject.imageCache) {
+        const img = MoveabelObject.imageCache[key];
+        if (img instanceof HTMLImageElement) {
+            img.src = "";
+        }
+        delete MoveabelObject.imageCache[key];
+    }
+}
+
+clearImageReferences() {
+    if (this.world?.character) {
+        this.world.character.img = null;
+    }
+
+    if (this.world?.level?.enemies) {
+        this.world.level.enemies.forEach(enemy => {
+            enemy.img = null;
+        });
+    }
+
+    if (this.world?.level?.endboss) {
+        this.world.level.endboss.img = null;
+    }
+}
+
+
+
+
+
 }

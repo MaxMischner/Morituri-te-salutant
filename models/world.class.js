@@ -1,7 +1,7 @@
 class World{
    
     character = new Character();
-    level = level1;
+    level = createLevel1();
     debugMode = false;
     canvas;
     ctx;
@@ -10,7 +10,7 @@ class World{
     camera_x = 0;
     currentState;
     
-constructor(canvas, keyboard) {
+constructor(canvas, keyboard, gameStateManager) {
     this.ctx = canvas.getContext('2d');
     this.canvas = canvas;
     this.keyboard = keyboard;
@@ -26,7 +26,8 @@ constructor(canvas, keyboard) {
     this.checkCollisions();
     this.startBackground = new Image();
     this.startBackground.src = "img/Interface/1.png"; 
-    this.gameStateManager = new GameStateManager(this);
+    this.gameStateManager = gameStateManager;
+     
 
 
 }
@@ -73,49 +74,72 @@ initUIElements() {
 
 }
 setupInput() {
-    this.canvas.addEventListener("click", (e) => {
-        const rect = this.canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
 
-        if (this.gameStateManager.currentState === 'start') {
-    if (this.ui.isInside(x, y, this.playButton)) {
-        this.gameStateManager.setCurrentState('menu'); // Wechsel zur Charakterauswahl
+    // Prüfe ob Bildschirm kleiner als 720px ist
+    if (window.innerWidth < 720) {
+
+        // → Touchsteuerung aktivieren
+        this.canvas.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            const rect = this.canvas.getBoundingClientRect();
+            const scaleX = this.canvas.width / rect.width;
+const scaleY = this.canvas.height / rect.height;
+
+const canvasX = (e.touches[0].clientX - rect.left) * scaleX;
+const canvasY = (e.touches[0].clientY - rect.top) * scaleY;
+
+this.handleInput(canvasX, canvasY); // wir lagern es in handleInput aus → gleiche Logik wie click
+        });
+
+    } else {
+
+        // → Maussteuerung aktivieren
+        this.canvas.addEventListener("click", (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            this.handleInput(x, y);
+        });
+
     }
-    return;
 }
-
-
-        if (this.gameStateManager.currentState === 'menu') {
-    for (let char of this.characterSelection) {
-        if (x >= char.x && x <= char.x + 100 &&
-            y >= char.y && y <= char.y + 100) {
-            this.selectedCharacter = char.name;
-            this.gameStateManager.startGameWithCharacter(char.name);
-            return;
+handleInput(x, y) {
+    if (this.gameStateManager.currentState === 'start') {
+        if (this.ui.isInside(x, y, this.playButton)) {
+            this.gameStateManager.setCurrentState('menu');
         }
-    }
-    return;
-}
-
-        if (this.ui.isInside(x, y, this.ui.soundButton)) {
-         soundManager.toggleSound();
         return;
-        }
+    }
 
-        // Prüfe Retry-Button
-        if (this.retryButton.visible && this.ui.isInside(x, y, this.retryButton)) {
-            this.restartGame();
-            return;
+    if (this.gameStateManager.currentState === 'menu') {
+        for (let char of this.characterSelection) {
+            if (x >= char.x && x <= char.x + 100 &&
+                y >= char.y && y <= char.y + 100) {
+                this.selectedCharacter = char.name;
+                this.gameStateManager.startGameWithCharacter(char.name);
+                return;
+            }
         }
+        return;
+    }
 
-        // Prüfe Victory-Button
-        if (this.victoryButton.visible && this.ui.isInside(x, y, this.victoryButton)) {
-            this.restartGame();
-            return;
-        }
-    });
+    if (this.ui.isInside(x, y, this.ui.soundButton)) {
+        soundManager.toggleSound();
+        return;
+    }
+
+    if (this.retryButton.visible && this.ui.isInside(x, y, this.retryButton)) {
+        this.restartGame();
+        return;
+    }
+
+    if (this.victoryButton.visible && this.ui.isInside(x, y, this.victoryButton)) {
+        this.restartGame();
+        return;
+    }
 }
+
 
 
 
@@ -164,18 +188,22 @@ checkCollectables() {
     const ctx = this.ctx;
     const canvas = this.canvas;
 
-    // Zeichenfläche leeren
+    ctx.save();
+
+    ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const currentState = this.gameStateManager.currentState;
 
     if (currentState === 'start') {
         this.ui.drawStartScreen();
+        ctx.restore();
         return;
     }
 
     if (currentState === 'menu') {
         this.ui.drawStartMenu(this.characterSelection, this.selectedCharacter);
+        ctx.restore();
         return;
     }
 
@@ -218,6 +246,7 @@ checkCollectables() {
         this.level.enemies.forEach(enemy => this.drawOffsetBox(enemy));
         this.drawOffsetBox(this.character);
     }
+    ctx.restore();
 }
 }
 
@@ -377,12 +406,14 @@ startCloudSpawner() {
 
 
 restartGame() {
-    soundManager.music.currentTime = 0;
-    if (soundManager.enabled) {
-        soundManager.music.play();
-    }
-    window.location.reload(); // oder: init();
+    this.retryButton.visible = false;
+    this.victoryButton.visible = false;
+    this.gameStateManager.resetLevelAndRestartCharacter();
 }
+
+
+
+
 
 
 
@@ -390,7 +421,7 @@ restartGame() {
 start() {
     const loop = () => {
         this.draw();
-        requestAnimationFrame(loop);
+        this.animationFrameId = requestAnimationFrame(loop);
     };
     loop();
 
@@ -399,4 +430,18 @@ start() {
         this.startCloudSpawner();
     }, 5000);
 }
+stopDrawingLoop() {
+    if (this.animationFrameId) {
+        cancelAnimationFrame(this.animationFrameId);
+        this.animationFrameId = null;
+    }
+}
+
+stopWorldTimers() {
+    if (this.cloudTimeoutId) {
+        clearTimeout(this.cloudTimeoutId);
+        this.cloudTimeoutId = null;
+    }
+}
+
 }

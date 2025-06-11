@@ -12,7 +12,7 @@ class MoveabelObject {
     isHurt = false;
     isDead = false; // wird bereits gesetzt
     invincibilityDuration = 1000;
-
+     intervalIDs = [];
     
     animationTimer = 0;
     animationInterval = 100;
@@ -40,23 +40,33 @@ class MoveabelObject {
     speedY = 0;
     acceleration = 2.5;
 
-    
+   setStoppableInterval(fn,time){
+    let id = setInterval(fn, time);
+    this.intervalIDs.push(id);
+}
 
-    applyGravity(){
-        setInterval(() => {
-            if (this.isAboveGround() || this.speedY > 0) {
-                this.y -= this.speedY;
-                this.speedY -= this.acceleration;
-    
-                const tile = this.getGroundTileBelow();
-                if (tile) {
-                    this.speedY = 0;
-                    this.y = tile.y - (this.height - this.offset.bottom);
-                }
+ stopInterval() {
+ this.intervalIDs.forEach(clearInterval);
+}
+
+
+
+
+    applyGravity() {
+    this.setStoppableInterval(() => {
+        if (this.isAboveGround() || this.speedY > 0) {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+
+            const tile = this.getGroundTileBelow();
+            if (tile) {
+                this.speedY = 0;
+                this.y = tile.y - (this.height - this.offset.bottom);
             }
-            
-        }, 1000 / 25);
-    }
+        }
+    }, 1000 / 25);
+}
+
     
     
     
@@ -387,7 +397,6 @@ isBlockingTile(tile) {
            this.y + this.height - this.offset.bottom > tile.y &&
            this.y + this.offset.top < tile.y + tile.height;
 }
-
 
 
 }

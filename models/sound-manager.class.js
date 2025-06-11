@@ -4,7 +4,7 @@ class SoundManager {
             attack: new Audio("audio/616502__empiremonkey__strikec.wav"),
             jump: new Audio("audio/667291__pekena_larva__voc_male_jump_03.wav"),
             block: new Audio("audio/791953__artninja__tmnt_2012_inspired_heavy_kick_03092025.wav"),
-            death: new Audio("saudio/695389__fmaudio__male-death-cry-6.wav"),
+            death: new Audio("audio/695389__fmaudio__male-death-cry-6.wav"),
             magic: new Audio("audio/572141__eminyildirim__water-elemantal-magic-skill.wav"),
             deathEnemy: new Audio("audio/535297__alejandrodiaz17__oof-death-sound.m4a"),
         };

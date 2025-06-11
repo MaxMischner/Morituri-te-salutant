@@ -104,7 +104,7 @@ lastAttackTime = 0;
     
 
     animate() {
-    setInterval(() => {
+     this.setStoppableInterval(() => {
         if (!this.world || !this.world.character) return;
         if (this.isDead) return;
 

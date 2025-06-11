@@ -8,6 +8,12 @@ bossNameOpacity = 0;
 bossNameSize = 80;
 bossNameY = 0;
 
+attackDuration = {
+    windup: 600,
+    strike: 500,
+    cooldown: 1500
+};
+
     offset = {
         top: 40,
         bottom: 0,
@@ -19,6 +25,14 @@ bossNameY = 0;
      attackRange = {
         offsetX: 10,
         width: 30,
+    };
+
+    animationSpeeds = {
+        IDLE: 150,
+        RUN: 100,
+        ATTACK: 150,
+        JUMP: 150,
+        
     };
     
      IMAGES_ATTACK = [
@@ -97,15 +111,16 @@ bossNameY = 0;
         
     }
 
-   animate() {
+animate() {
     if (this.world.character.x > this.world.level_end_x && !this.hasIntroStarted) {
-    this.triggerIntro();
-}
+        this.triggerIntro();
+    }
 
-    setInterval(() => {
+    this.setStoppableInterval(() => {
         this.updateBossBehavior();
     }, 1000 / 60);
 }
+
 
 updateBossBehavior() {
      if (!this.world || !this.world.character) return;
@@ -170,14 +185,15 @@ triggerIntro() {
     let steps = 30;
     let stepSize = 3;
 
-    const interval = setInterval(() => {
-        if (steps-- > 0) {
-            this.x -= stepSize; // Minotauros läuft zum Spieler
-        } else {
-            clearInterval(interval);
-            this.startBossIntroText();
-        }
-    }, 50);
+    this.setStoppableInterval(() => {
+    if (steps-- > 0) {
+        this.x -= stepSize;
+    } else {
+        this.startBossIntroText();
+        this.stopAllIntervals(); // ⬅️ Optional: damit die anderen Intervalle auch nicht mehr weiterlaufen
+    }
+}, 50);
+
 }
 
 

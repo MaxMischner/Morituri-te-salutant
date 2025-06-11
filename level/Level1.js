@@ -1,4 +1,5 @@
-const level1= new Level(
+function createLevel1() {
+    return new Level(
      [
         
         new OrkWorrier(450,350),
@@ -86,16 +87,16 @@ const level1= new Level(
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 64, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 96, 450),
 
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 110, 418),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 110, 386),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 142, 386),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 142, 418),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 142, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_10.png', 128, 418),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_01.png', 128, 386),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_12.png', 160, 386),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_12.png', 160, 418),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_49.png', 160, 354),
             
 
 
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 128, 450),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 160, 450),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_24.png', 128, 450),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_22.png', 160, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 192, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 224, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 256, 450),
@@ -112,22 +113,22 @@ const level1= new Level(
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 608, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 640, 450),
             new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 672, 450),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 704, 450),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_42.png', 704, 450),
 
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 704, 418),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_49.png', 704, 418),
 
            
 
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 800, 354),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 832, 354),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 864, 354),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 896, 354),
-            new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 928, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_29.png', 800, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 832, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 864, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 896, 354),
+            new GroundTile('../img/Plattform/1 Tiles/Tile_31.png', 928, 354),
 
 
             // 928 - 1500 → Standardboden + kleine Plattformen
 
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 960, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_01.png', 960, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 992, 450),
 
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1024, 450),
@@ -135,24 +136,25 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1056, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1088, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1120, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1152, 450),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1184, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_03.png', 1184, 450),
 
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 960, 322),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 992, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_29.png', 960, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 992, 322),
 
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1024, 322),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1056, 322),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1088, 322),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1120, 322),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1152, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1024, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1056, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1088, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1120, 322),
+new GroundTile('../img/Plattform/1 Tiles/Tile_31.png', 1152, 322),
 
 // Plattform zum Springen (y = 400)
 
 
 // Boden geht weiter (y = 450)
-
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1312, 450),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1344, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_10.png', 1312, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_12.png', 1344, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_01.png', 1312, 428),
+new GroundTile('../img/Plattform/1 Tiles/Tile_03.png', 1344, 428),
 // Loch (Springpassage)
 // Loch
 
@@ -160,28 +162,28 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1344, 450),
 
 // 1500 - 2000 → Schluchten und Plattformen
 // Hohe Plattform (y = 350)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1472, 350),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1504, 350),
+new GroundTile('../img/Plattform/1 Tiles/Tile_29.png', 1472, 350),
+new GroundTile('../img/Plattform/1 Tiles/Tile_31.png', 1504, 350),
 // tiefer Boden → SCHLUCHTE (y = 500 → für Orks reinspawnen möglich!)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1536, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1568, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1600, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_29.png', 1536, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1568, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1600, 300),
 // hohe Plattform (y = 300 → Sprungzone)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1632, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1664, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1632, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1664, 300),
 // Boden normalisieren
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1696, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1728, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1760, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1696, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1728, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1760, 300),
 // kleine Schlucht (Lücke zum Springen)
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1792, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1824, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1856, 300),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1888, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1792, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1824, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 1856, 300),
+new GroundTile('../img/Plattform/1 Tiles/Tile_31.png', 1888, 300),
 
 
 // 2000 - 2300 → Normale Plattformen vor dem Boss
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1952, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_01.png', 1952, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 1984, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2016, 450),
 
@@ -191,12 +193,12 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2048, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2080, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2112, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2144, 450),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2176, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_03.png', 2176, 450),
 
 
 // 2300 - 2600 → FLACHE Bossarena → keine Löcher
 
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2332, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_01.png', 2332, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2364, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2396, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2428, 450),
@@ -204,24 +206,24 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2460, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2492, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2524, 450),
 new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2556, 450),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2588, 450),
+new GroundTile('../img/Plattform/1 Tiles/Tile_03.png', 2588, 450),
 
 // 2600 - 3000 → Hohe Plattformen und Schluchten
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2620, 350),
-new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2684, 350),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2716, 350),
+new GroundTile('../img/Plattform/1 Tiles/Tile_29.png', 2620, 350),
+new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 2652, 350),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 2684, 350),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_31.png', 2716, 350),
     
 
     // Höher Plattform (y = 300)
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2820, 300),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2852, 300),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2884, 300),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2916, 300),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2948, 300),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_29.png', 2820, 300),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 2852, 300),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 2884, 300),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_30.png', 2916, 300),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_31.png', 2948, 300),
 
 
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2980, 450),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_01.png', 2980, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3012, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3044, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3076, 450),
@@ -231,9 +233,9 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3204, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3236, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3268, 450),
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3300, 450),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_03.png', 3300, 450),
    
-    new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3428, 450),
+    new GroundTile('../img/Plattform/1 Tiles/Tile_01.png', 3428, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3460, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3492, 450),
     new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 3524, 450),
@@ -281,7 +283,7 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
     new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1056,270),
     new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1088,270),
 
-    new Blockstone('../img/Collectebals/PNG/tile000.png',1344,400),
+    new Blockstone('../img/Collectebals/PNG/tile000.png',1344,385),
 
     new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1848,260),
     new ScoreItem ('../img/Collectebals/PNG/shiny/5.png',1816,260),
@@ -309,4 +311,4 @@ new GroundTile('../img/Plattform/1 Tiles/Tile_02.png', 2652, 350),
 
 
 ],
-);
+);}
