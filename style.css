@@ -8,7 +8,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    background-image: url('img/Plattform/2 Background/Background.png');
+    background-image: url('img/Plattform/2background/Background.png');
     background-repeat: no-repeat;
     background-size: cover;
     flex-direction: column;
