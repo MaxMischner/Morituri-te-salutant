@@ -19,13 +19,24 @@ class SoundManager {
     }
     }
 
-    play(name) {
-        if (!this.enabled || !this.sounds[name]) return;
-        this.sounds[name].currentTime = 0;
-        this.sounds[name].play();
-    }
+  /**
+ * Plays the specified sound by name if sound is enabled and the sound exists.
+ * Resets the sound to the beginning before playing.
+ * @param {string} name - The name of the sound to play.
+ * @public
+ */
+play(name) {
+    if (!this.enabled || !this.sounds[name]) return;
+    this.sounds[name].currentTime = 0;
+    this.sounds[name].play();
+}
 
-    toggleSound() {
+/**
+ * Toggles the sound system on or off.
+ * Plays or pauses the background music accordingly.
+ * @public
+ */
+toggleSound() {
     this.enabled = !this.enabled;
     console.log(`Sound ${this.enabled ? "aktiviert" : "deaktiviert"}`);
 
@@ -35,6 +46,7 @@ class SoundManager {
         this.music.pause();
     }
 }
+
 
 }
 

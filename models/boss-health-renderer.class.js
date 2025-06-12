@@ -3,6 +3,10 @@ class BossHealthRenderer {
         this.world = world;
     }
 
+       /**
+     * Draws the boss health bar and name on the screen if an active boss is present.
+     * This is the main public method of the BossHealthRenderer.
+     */
     draw() {
         const boss = this.world.level.enemies.find(e => e instanceof Endboss);
         if (!boss || !boss.isActive) return;
@@ -12,12 +16,20 @@ class BossHealthRenderer {
         this.drawBossName(boss);
         this.world.ctx.restore();
     }
-
+    /**
+     * Prepares the canvas context for boss rendering.
+     * @private
+     */
     prepareContext() {
         this.world.ctx.save();
         this.world.ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
 
+     /**
+     * Draws the boss health bar.
+     * @param {Endboss} boss - The boss entity.
+     * @private
+     */
     drawBossHealthBar(boss) {
         const width = 300;
         const height = 20;
@@ -33,21 +45,53 @@ class BossHealthRenderer {
         this.drawBarFrame(x, y, width, height, "#000");
     }
 
+     /**
+     * Draws the background of the boss health bar.
+     * @param {number} x - X-coordinate.
+     * @param {number} y - Y-coordinate.
+     * @param {number} width - Width of the bar.
+     * @param {number} height - Height of the bar.
+     * @param {string} color - Fill color.
+     * @private
+     */
     drawBarBackground(x, y, width, height, color) {
         this.world.ctx.fillStyle = color;
         this.world.ctx.fillRect(x, y, width, height);
     }
 
+     /**
+     * Draws the filled portion of the boss health bar.
+     * @param {number} x - X-coordinate.
+     * @param {number} y - Y-coordinate.
+     * @param {number} width - Width of the bar.
+     * @param {number} height - Height of the bar.
+     * @param {string} color - Fill color.
+     * @private
+     */
     drawBarFill(x, y, width, height, color) {
         this.world.ctx.fillStyle = color;
         this.world.ctx.fillRect(x, y, width, height);
     }
 
+        /**
+     * Draws the frame (border) of the boss health bar.
+     * @param {number} x - X-coordinate.
+     * @param {number} y - Y-coordinate.
+     * @param {number} width - Width of the bar.
+     * @param {number} height - Height of the bar.
+     * @param {string} color - Stroke color.
+     * @private
+     */
     drawBarFrame(x, y, width, height, color) {
         this.world.ctx.strokeStyle = color;
         this.world.ctx.strokeRect(x, y, width, height);
     }
 
+ /**
+     * Draws the boss name above the health bar.
+     * @param {Endboss} boss - The boss entity.
+     * @private
+     */
     drawBossName(boss) {
         const width = 300;
         const margin = 30;
@@ -63,6 +107,12 @@ class BossHealthRenderer {
         this.world.ctx.fillText("MINOTAUROS", x, boss.bossNameY);
     }
 
+    /**
+     * Updates the animation of the boss name (opacity, size, position).
+     * @param {Endboss} boss - The boss entity.
+     * @param {number} targetY - Target Y-coordinate for the boss name.
+     * @private
+     */
     updateBossNameAnimation(boss, targetY) {
         if (boss.bossNameOpacity < 1) boss.bossNameOpacity += 0.005;
         if (boss.bossNameSize > 24) boss.bossNameSize -= 0.3;

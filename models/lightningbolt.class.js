@@ -43,62 +43,97 @@ class LightningBolt extends MoveabelObject {
         this.animate();
     }
 
-    animate() {
-        const interval = setInterval(() => {
-            if (this.isDead) {
-                clearInterval(interval);
-                return;
-            }
-
-            // Bewegung nach unten
-            this.y += this.speedY;
-
-            // Framewechsel
-            const now = Date.now();
-            if (now - this.frameTimer > this.frameInterval) {
-                this.frameTimer = now;
-                this.currentFrame++;
-
-                if (this.currentFrame >= this.IMAGES_LIGHTNING.length) {
-                    this.currentFrame = this.IMAGES_LIGHTNING.length - 1;
-                }
-
-                const path = this.IMAGES_LIGHTNING[this.currentFrame];
-                this.img = this.imageCache[path];
-            }
-
-            // Aufprall prüfen
-            if (!this.hasHit && this.y >= this.impactY) {
-                this.hasHit = true;
-                this.checkHit();
-                this.scheduleRemoval();
-            }
-        }, 1000 / 60);
-    }
-
-    checkHit() {
-        // Einfacher X-Check (in der Mitte treffen)
-        const player = this.target;
-        const boltCenter = this.x + this.width / 2;
-        const playerLeft = player.x + player.offset.left;
-        const playerRight = player.x + player.width - player.offset.right;
-
-        if (boltCenter >= playerLeft && boltCenter <= playerRight) {
-            player.takeDamage(30, null);
-            console.log("Lightning Bolt trifft den Spieler!");
-        } else {
-            console.log("Lightning Bolt verfehlt den Spieler.");
+    /**
+ * Starts the Lightning Bolt animation loop.
+ * Handles movement, frame updates, and impact detection.
+ * @private
+ */
+animate() {
+    const interval = setInterval(() => {
+        if (this.isDead) {
+            clearInterval(interval);
+            return;
         }
-    }
 
-    scheduleRemoval() {
-        setTimeout(() => {
-            if (this.world?.level?.activeEffects) {
-                const index = this.world.level.activeEffects.indexOf(this);
-                if (index !== -1) {
-                    this.world.level.activeEffects.splice(index, 1);
-                }
-            }
-        }, 1000);
+        this.moveDown();
+        this.updateAnimationFrame();
+        this.handleImpact();
+    }, 1000 / 60);
+}
+
+/**
+ * Moves the Lightning Bolt downward based on its vertical speed.
+ * @private
+ */
+moveDown() {
+    this.y += this.speedY;
+}
+
+/**
+ * Updates the Lightning Bolt animation frame based on time elapsed.
+ * @private
+ */
+updateAnimationFrame() {
+    const now = Date.now();
+    if (now - this.frameTimer > this.frameInterval) {
+        this.frameTimer = now;
+        this.currentFrame++;
+
+        if (this.currentFrame >= this.IMAGES_LIGHTNING.length) {
+            this.currentFrame = this.IMAGES_LIGHTNING.length - 1;
+        }
+
+        const path = this.IMAGES_LIGHTNING[this.currentFrame];
+        this.img = this.imageCache[path];
     }
+}
+
+/**
+ * Checks if the Lightning Bolt has reached the impact point and triggers hit check and removal.
+ * @private
+ */
+handleImpact() {
+    if (!this.hasHit && this.y >= this.impactY) {
+        this.hasHit = true;
+        this.checkHit();
+        this.scheduleRemoval();
+    }
+}
+
+/**
+ * Checks if the Lightning Bolt hits the target based on X position overlap.
+ * Applies damage to the target if a hit is detected.
+ * @private
+ */
+checkHit() {
+    // Simple X-axis check (hit if center of bolt is within player bounds)
+    const player = this.target;
+    const boltCenter = this.x + this.width / 2;
+    const playerLeft = player.x + player.offset.left;
+    const playerRight = player.x + player.width - player.offset.right;
+
+    if (boltCenter >= playerLeft && boltCenter <= playerRight) {
+        player.takeDamage(30, null);
+        console.log("Lightning Bolt hits the player!");
+    } else {
+        console.log("Lightning Bolt misses the player.");
+    }
+}
+
+/**
+ * Schedules the Lightning Bolt for removal from the active effects list after 1 second.
+ * Ensures the effect is properly cleaned up from the level.
+ * @private
+ */
+scheduleRemoval() {
+    setTimeout(() => {
+        if (this.world?.level?.activeEffects) {
+            const index = this.world.level.activeEffects.indexOf(this);
+            if (index !== -1) {
+                this.world.level.activeEffects.splice(index, 1);
+            }
+        }
+    }, 1000);
+}
+
 }

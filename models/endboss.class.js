@@ -111,6 +111,11 @@ attackDuration = {
         
     }
 
+/**
+ * Starts the boss animation and behavior loop.
+ * Triggers the intro sequence if the character reaches the end of the level.
+ * This is the main public method of the Endboss.
+ */
 animate() {
     if (this.world.character.x > this.world.level_end_x && !this.hasIntroStarted) {
         this.triggerIntro();
@@ -122,61 +127,97 @@ animate() {
 }
 
 
+
+/**
+ * Updates the boss behavior and animation state.
+ * Delegates behavior handling to specialized methods.
+ * @private
+ */
 updateBossBehavior() {
-     if (!this.world || !this.world.character) return;
-    // Falls tot, nichts mehr machen
+    if (!this.world || !this.world.character) return;
     if (this.isDead) return;
 
-    const character = this.world.character;
+    this.checkActivation();
 
-    // Boss wird erst aktiv, wenn Spieler im Endbereich ist
-    const activationX = this.world.level.level_end_x - 720;
-
-    if (!this.isActive && character.x >= activationX) {
-        this.isActive = true;
-        this.speed = 0.3; // Jetzt darf er sich bewegen
-        console.log("Boss aktiviert!");
-    }
-
-    // Solange inaktiv → Idle-Animation
     if (!this.isActive) {
         this.playAnimation(this.IMAGES_IDEL, "IDLE");
         return;
     }
 
-    // Wenn gestunnt → Hurt-Animation & Pause
-    if (this.isStunned) {
-    const stunDuration = Date.now() - this.stunTime;
-    if (stunDuration < 3000) {
-        this.playAnimation(this.IMAGES_HURT, "HURT"); // ✓ animiert
-        return; // ↩ nichts anderes machen
-    } else {
-        this.isStunned = false;
+    if (this.handleStunState()) return;
+    if (this.handleOngoingAttack()) return;
+
+    this.handleMovementAndAttack();
+}
+
+/**
+ * Checks if the boss should be activated based on the character position.
+ * @private
+ */
+checkActivation() {
+    const character = this.world.character;
+    const activationX = this.world.level.level_end_x - 720;
+
+    if (!this.isActive && character.x >= activationX) {
+        this.isActive = true;
+        this.speed = 0.3;
+        console.log("Boss activated!");
     }
 }
 
-
-    // Angriff läuft → Angriff abspielen
-    if (this.attackState !== "idle") {
-        this.updateAttack(); // Erbt von Enemy
-        return;
+/**
+ * Handles the stun state. Plays hurt animation if stunned.
+ * @returns {boolean} True if boss is stunned and no further action should occur.
+ * @private
+ */
+handleStunState() {
+    if (this.isStunned) {
+        const stunDuration = Date.now() - this.stunTime;
+        if (stunDuration < 3000) {
+            this.playAnimation(this.IMAGES_HURT, "HURT");
+            return true;
+        } else {
+            this.isStunned = false;
+        }
     }
+    return false;
+}
 
-    // Richtung setzen
+/**
+ * Handles ongoing attack state.
+ * @returns {boolean} True if attack is ongoing and no further action should occur.
+ * @private
+ */
+handleOngoingAttack() {
+    if (this.attackState !== "idle") {
+        this.updateAttack();
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Handles movement toward the character and triggers attack when in range.
+ * @private
+ */
+handleMovementAndAttack() {
+    const character = this.world.character;
     this.otherDiretion = this.x > character.x;
 
-    // Bewegung zum Charakter
     if (Math.abs(this.x - character.x) > this.attackRangeValue) {
-        // Boss bewegt sich auf den Spieler zu
         this.x += this.otherDiretion ? -this.speed : this.speed;
         this.playAnimation(this.IMAGES_RUN, "RUN");
     } else {
-        // Wenn nahe genug → Angriff starten
-        this.startAttack(); // aus Enemy
+        this.startAttack();
         soundManager.play("attack");
     }
 }
 
+/**
+ * Triggers the boss intro sequence.
+ * Moves the boss forward step by step, then starts the intro text and stops other intervals.
+ * @private
+ */
 triggerIntro() {
     this.hasIntroStarted = true;
     this.isActive = true;
@@ -186,17 +227,14 @@ triggerIntro() {
     let stepSize = 3;
 
     this.setStoppableInterval(() => {
-    if (steps-- > 0) {
-        this.x -= stepSize;
-    } else {
-        this.startBossIntroText();
-        this.stopAllIntervals(); // ⬅️ Optional: damit die anderen Intervalle auch nicht mehr weiterlaufen
-    }
-}, 50);
-
+        if (steps-- > 0) {
+            this.x -= stepSize;
+        } else {
+            this.startBossIntroText();
+            this.stopAllIntervals();
+        }
+    }, 50);
 }
-
-
 
 }
 

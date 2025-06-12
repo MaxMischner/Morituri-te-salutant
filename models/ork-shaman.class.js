@@ -103,62 +103,108 @@ lastAttackTime = 0;
     
     
 
-    animate() {
-     this.setStoppableInterval(() => {
+    /**
+ * Starts the Orc Shaman animation loop.
+ * Handles direction, stun state, casting state, and attack logic.
+ * @private
+ */
+animate() {
+    this.setStoppableInterval(() => {
         if (!this.world || !this.world.character) return;
         if (this.isDead) return;
 
         const character = this.world.character;
 
-        // Richtung zum Spieler drehen
-        this.otherDiretion = this.x > character.x;
+        this.updateFacingDirection(character);
 
-        // Falls gestunnt → Hurt-Animation
-        if (this.isStunned) {
-            const stunDuration = Date.now() - this.stunTime;
-            if (stunDuration < 3000) {
-                this.playAnimation(this.IMAGES_HURT, "HURT");
-                return;
-            } else {
-                this.isStunned = false;
-            }
-        }
+        if (this.handleStunState()) return;
+        if (this.handleCastingState(character)) return;
 
-        // Falls gerade zaubert
-        if (this.isCasting) {
-            this.playAnimation(this.IMAGES_MAGIC, "ATTACK");
-            this.castingFrame++;
-
-            // Wenn Animation zu Ende → Blitz auslösen
-            if (this.castingFrame >= this.IMAGES_MAGIC.length) {
-                this.castLightningAt(character.x + character.width / 2); // Ziel war aktuelle Spielerposition
-                this.isCasting = false;
-                this.castingFrame = 0;
-                this.lastAttackTime = Date.now();
-            }
-            return;
-        }
-
-        // Wenn Abklingzeit vorbei → neue Zauber beginnen
-       const distance = Math.abs(this.x - character.x);
-
-if (
-    Date.now() - this.lastAttackTime > this.attackCooldown &&
-    distance <= 500
-) {
-    this.isCasting = true;
-    this.castingFrame = 0;
-} else {
-            this.playAnimation(this.IMAGES_IDEL, "IDLE");
-        }
+        this.handleAttackLogic(character);
     }, 1000 / 60);
 }
-castLightningAt(targetX) {
-    soundManager.play("magic");
-    const bolt = new LightningBolt(targetX, 0, this.world.character); // kommt von oben
-    bolt.world = this.world; // LightningBolt braucht Zugriff auf world
-    this.world.level.activeEffects.push(bolt);
+
+/**
+ * Updates the facing direction of the Orc Shaman to face the character.
+ * @param {Character} character - The target character.
+ * @private
+ */
+updateFacingDirection(character) {
+    this.otherDiretion = this.x > character.x;
 }
 
+/**
+ * Handles the stunned state of the Orc Shaman and plays the hurt animation if stunned.
+ * @returns {boolean} True if the shaman is stunned and no further action should occur.
+ * @private
+ */
+handleStunState() {
+    if (this.isStunned) {
+        const stunDuration = Date.now() - this.stunTime;
+        if (stunDuration < 3000) {
+            this.playAnimation(this.IMAGES_HURT, "HURT");
+            return true;
+        } else {
+            this.isStunned = false;
+        }
+    }
+    return false;
+}
+
+/**
+ * Handles the casting state of the Orc Shaman.
+ * Plays casting animation and triggers Lightning Bolt at the end of the casting.
+ * @param {Character} character - The target character.
+ * @returns {boolean} True if casting is in progress and no further action should occur.
+ * @private
+ */
+handleCastingState(character) {
+    if (this.isCasting) {
+        this.playAnimation(this.IMAGES_MAGIC, "ATTACK");
+        this.castingFrame++;
+
+        if (this.castingFrame >= this.IMAGES_MAGIC.length) {
+            this.castLightningAt(character.x + character.width / 2);
+            this.isCasting = false;
+            this.castingFrame = 0;
+            this.lastAttackTime = Date.now();
+        }
+        return true;
+    }
+    return false;
+}
+
+/**
+ * Handles attack logic.
+ * Starts casting if cooldown is ready and target is in range, otherwise plays idle animation.
+ * @param {Character} character - The target character.
+ * @private
+ */
+handleAttackLogic(character) {
+    const distance = Math.abs(this.x - character.x);
+
+    if (
+        Date.now() - this.lastAttackTime > this.attackCooldown &&
+        distance <= 500
+    ) {
+        this.isCasting = true;
+        this.castingFrame = 0;
+    } else {
+        this.playAnimation(this.IMAGES_IDEL, "IDLE");
+    }
+}
+
+/**
+ * Casts a Lightning Bolt targeting the specified X coordinate.
+ * Plays a sound effect and adds the Lightning Bolt to the level's active effects.
+ * @param {number} targetX - The X coordinate to target with the Lightning Bolt.
+ * @private
+ */
+castLightningAt(targetX) {
+    soundManager.play("magic");
+    const bolt = new LightningBolt(targetX, 0, this.world.character); // comes from above
+    bolt.world = this.world; // LightningBolt needs access to world
+    this.world.level.activeEffects.push(bolt);
+}
 
 }

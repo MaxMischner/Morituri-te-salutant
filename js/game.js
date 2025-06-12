@@ -1,17 +1,25 @@
+
 let canvas;
 let world ;
 let keyboard = new Keyboard();
 
 
 
+/**
+ * Initializes the game.
+ * Creates the canvas, keyboard, game state manager, and world.
+ * Starts the world loop.
+ * @public
+ */
 function init() {
     canvas = document.getElementById("canvas");
     keyboard = new Keyboard();
     const gameStateManager = new GameStateManager(null);
-    world = new World(canvas, keyboard,gameStateManager);
-gameStateManager.setWorld(world);
-     world.start();
-    }
+    world = new World(canvas, keyboard, gameStateManager);
+    gameStateManager.setWorld(world);
+    world.start();
+}
+
 
 
 window.addEventListener("keydown", (e) => {
