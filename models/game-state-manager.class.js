@@ -6,7 +6,7 @@ class GameStateManager {
         this.currentState = 'start'; // Mögliche Zustände: 'menu', 'playing', 'paused', 'gameOver', 'victory'
     }
 
-    /**
+/**
  * Starts the game with the selected character.
  * Initializes the character, sets up the world, and starts background music if enabled.
  * @param {string} characterName - The name of the selected character ("Hero 1" or "Hero 2").
@@ -15,20 +15,15 @@ class GameStateManager {
 startGameWithCharacter(characterName) {
     this.currentState = this.setCurrentState('playing');
     this.world.gameStarted = true;
-
     if (characterName === "Hero 1") {
         this.world.character = new Hero1();
     } else if (characterName === "Hero 2") {
-        this.world.character = new Hero2();
-    }
-    
+        this.world.character = new Hero2();}
     this.world.level.character = this.world.character;
     this.world.setWorld();
     this.world.character.animate();
-
     if (soundManager.enabled) {
-        soundManager.music.play();
-    }
+        soundManager.music.play();}
 }
 
 /**
@@ -37,7 +32,6 @@ startGameWithCharacter(characterName) {
  * @public
  */
 setVictory() {
-    console.log("Setting game state to victory");
     this.currentState = 'victory';
     this.world.gameStarted = false;
 }
@@ -48,7 +42,6 @@ setVictory() {
  * @public
  */
 setGameOver() {
-    console.log("Setting game state to game over");
     this.currentState = 'gameOver';
     this.world.gameStarted = false;
 }
@@ -83,7 +76,6 @@ setCurrentState(state) {
  */
 resetLevelAndRestartCharacter() {
     const selectedCharacter = this.selectedCharacter || "Hero 1";
-
     this.restartGameWithSelectedCharacter(selectedCharacter);
 }
 
@@ -97,7 +89,6 @@ restartGameWithSelectedCharacter(characterName) {
     this.selectedCharacter = characterName;
     this.characterSelection = true;
     this.currentState = 'playing';
-
     init();
 }
 
@@ -130,19 +121,12 @@ clearImageCache() {
  */
 clearImageReferences() {
     if (this.world?.character) {
-        this.world.character.img = null;
-    }
-
+        this.world.character.img = null; }
     if (this.world?.level?.enemies) {
         this.world.level.enemies.forEach(enemy => {
             enemy.img = null;
-        });
-    }
-
+        });}
     if (this.world?.level?.endboss) {
-        this.world.level.endboss.img = null;
-    }
+        this.world.level.endboss.img = null; }
 }
-
-
 }

@@ -11,10 +11,8 @@ class World{
     camera_x = 0;
     currentState;
     
-constructor(canvas, keyboard, gameStateManager) {
-    
+    constructor(canvas, keyboard, gameStateManager) {
     this.ctx = canvas.getContext('2d');
-    
     this.canvas = canvas;
     this.keyboard = keyboard;
     this.setWorld();
@@ -34,12 +32,12 @@ initCharacterSelection() {
     this.characterSelection = [
         {
             name: "Hero 1",
-            imgSrc: "../img/Heros/Gladiator_1/Idle_2/tile000.png",
+            imgSrc: "./img/Heros/Gladiator_1/Idle_2/tile000.png",
             x: 200,     
             y: 180
         },
         {   name: "Hero 2",
-            imgSrc: "../img/Heros/Gladiator_2/Idle_2/tile000.png",
+            imgSrc: "./img/Heros/Gladiator_2/Idle_2/tile000.png",
             x: 450,      
             y: 180
         }
@@ -55,26 +53,18 @@ initCharacterSelection() {
  */
 initUIElements() {
     this.blockIcon = new Image();
-    this.blockIcon.src = "../img/Collectebals/PNG/tile000.png";
+    this.blockIcon.src = "./img/Collectebals/PNG/tile000.png";
     this.scoreIcon = new Image();
     this.scoreIcon.src = "img/Collectebals/PNG/shiny/5.png";
-    this.retryButton = {
-        x: 0, y: 0, width: 160, height: 40,
-        visible: false
-    };
-    this.victoryButton = {
-        x: 0, y: 0, width: 200, height: 50,
-        visible: false
-    };
-    this.playButton = {
-    x: this.canvas.width / 2 - 65,
-    y: this.canvas.height / 2 - 25,
+    this.retryButton = {x: 0, y: 0, width: 160, height: 40,visible: false};
+    this.victoryButton = { x: 0, y: 0, width: 200, height: 50,visible: false};
+    this.playButton = {x: this.canvas.width / 2 - 65, y: this.canvas.height / 2 - 25,
     width: 125,
     height: 75,
     visible: true
 };
-
 }
+
 /**
  * Sets up input handling based on device type (touch or mouse).
  */
@@ -85,6 +75,7 @@ setupInput() {
         this.setupMouseInput();
     }
 }
+
 /**
  * Sets up touch input handling for mobile devices.
  */
@@ -94,13 +85,13 @@ setupTouchInput() {
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / rect.width;
         const scaleY = this.canvas.height / rect.height;
-
         const canvasX = (e.touches[0].clientX - rect.left) * scaleX;
         const canvasY = (e.touches[0].clientY - rect.top) * scaleY;
-
         this.handleInput(canvasX, canvasY);
     });
-}/**
+}
+
+/**
  * Sets up mouse input handling for desktop devices.
  */
 setupMouseInput() {
@@ -108,7 +99,6 @@ setupMouseInput() {
         const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-
         this.handleInput(x, y);
     });
 }
@@ -123,14 +113,10 @@ setupMouseInput() {
 handleInput(x, y) {
     if (this.gameStateManager.currentState === 'start') {
         this.handleStartScreenInput(x, y);
-        return;
-    }
-
+        return;}
     if (this.gameStateManager.currentState === 'menu') {
         this.handleMenuInput(x, y);
-        return;
-    }
-
+        return;}
     this.handleInGameButtonInput(x, y);
 }
 
@@ -172,22 +158,15 @@ handleMenuInput(x, y) {
 handleInGameButtonInput(x, y) {
     if (this.ui.isInside(x, y, this.ui.soundButton)) {
         soundManager.toggleSound();
-        return;
-    }
-
+        return;}
     if (this.retryButton.visible && this.ui.isInside(x, y, this.retryButton)) {
         this.restartGame();
-        return;
-    }
-
+        return; }
     if (this.victoryButton.visible && this.ui.isInside(x, y, this.victoryButton)) {
-        this.restartGame();
-    }
+        this.restartGame();}
 }
 
-
-
-    /**
+/**
  * Links the current world instance to the player character and all enemies.
  * 
  * - Sets `enemy.world` and `character.world` to this instance.
@@ -195,7 +174,6 @@ handleInGameButtonInput(x, y) {
  */
 setWorld() {
     this.character.world = this;
-
     this.level.enemies.forEach(enemy => {
         enemy.world = this;
         if (enemy instanceof Endboss) {
@@ -226,16 +204,12 @@ checkEnemyHits() {
     this.level.enemies.forEach(enemy => {
         if (this.character.isAttacking && this.character.isAttackFrameActive()) {
             if (this.character.hit(enemy)) {
-                enemy.takeDamage();
-            }
-        }
-
-        if (!enemy.isDead) {
+                enemy.takeDamage(); }
+        } if (!enemy.isDead) {
             enemy.tryAttack(this.character);
         }
     });
 }
-
 
 /**
  * Checks for collisions between the player character and collectable objects.
@@ -252,29 +226,23 @@ checkCollectables() {
     });
 }
 
- 
-  /**
+ /**
  * Renders the game world and UI based on the current game state.
  */
 draw() {
     const ctx = this.ctx;
     const canvas = this.canvas;
-
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
     const currentState = this.gameStateManager.currentState;
-
     if (currentState === 'start') {
         this.drawStartScreen();
     } else if (currentState === 'menu') {
         this.drawMenuScreen();
     } else if (currentState === 'playing') {
         this.renderer.drawPlayingState();
-    }
-
-    ctx.restore();
+    }ctx.restore();
 }
 
 /**
@@ -310,32 +278,18 @@ logStunnedEnemies() {
  */
 startCloudSpawner() {
     let concurrentSpawns = 0;
-
     const spawnCloud = () => {
-        // Remove off-screen clouds
         this.level.clouds = this.level.clouds.filter(cloud => cloud.x > -cloud.width);
-
-        // Max 15 clouds and max 3 concurrent spawns
         if (this.level.clouds.length < 15 && concurrentSpawns < 3) {
             concurrentSpawns++;
-
             let cloud = new Cloud();
             cloud.x = this.level.level_end_x + Math.random() * 200;
             cloud.y = 50 + Math.random() * 100;
             this.level.clouds.push(cloud);
-
-            // Release spawn slot after delay
-            setTimeout(() => {
-                concurrentSpawns--;
-            }, 3000);
-        }
-
-        // Schedule next spawn (20–50 seconds)
+            setTimeout(() => { concurrentSpawns--; }, 3000);}
         let nextSpawn = 20000 + Math.random() * 30000;
-        setTimeout(spawnCloud, nextSpawn);
-    };
-
-    spawnCloud(); // Start the first cloud
+        setTimeout(spawnCloud, nextSpawn); };
+    spawnCloud(); 
 }
 
 /**
@@ -363,8 +317,6 @@ start() {
         this.animationFrameId = requestAnimationFrame(loop);
     };
     loop();
-
-    // Start the cloud spawner after 5 seconds
     setTimeout(() => {
         this.startCloudSpawner();
     }, 5000);

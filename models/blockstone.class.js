@@ -1,12 +1,15 @@
 class Blockstone extends CollectableObject {
 
-    
-
     constructor(imagepath,x,y) {
         super().loadImage(imagepath);
-        
         this.x = x;
         this.y = y;
+        this.offset = {
+        top: 5,
+        bottom: 5,
+        left: 5,
+        right: 5
+    };
     }
 
    /**
@@ -16,7 +19,6 @@ class Blockstone extends CollectableObject {
  */
 onCollect(character) {
     character.blockEnergy = (character.blockEnergy || 0) + 1;
-    console.log("Block energy +1!");
 }
 
 }

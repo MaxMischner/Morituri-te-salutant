@@ -4,7 +4,7 @@ class MenuRenderer {
         this.initImages();
     }
 
-   /**
+/**
  * Initializes the images used in the start menu.
  * Loads the background image for the start screen.
  * @private
@@ -75,20 +75,14 @@ drawCharacterOptions(characterSelection, selectedCharacter) {
     characterSelection.forEach(char => {
         if (!char.img) {
             char.img = new Image();
-            char.img.src = char.imgSrc;
-        }
-
+            char.img.src = char.imgSrc;}
         if (char.img.complete) {
-            this.world.ctx.drawImage(char.img, char.x, char.y, 100, 100);
-        }
-
+            this.world.ctx.drawImage(char.img, char.x, char.y, 100, 100);}
         this.world.ctx.fillStyle = "#fff";
         this.world.ctx.font = "20px Arial";
         this.world.ctx.fillText(char.name, char.x + 50, char.y + 130);
-
         if (selectedCharacter === char.name) {
-            this.drawSelectionHighlight(char);
-        }
+            this.drawSelectionHighlight(char);}
     });
 }
 
@@ -102,5 +96,4 @@ drawSelectionHighlight(char) {
     this.world.ctx.lineWidth = 3;
     this.world.ctx.strokeRect(char.x - 5, char.y - 5, 110, 110);
 }
-
 }

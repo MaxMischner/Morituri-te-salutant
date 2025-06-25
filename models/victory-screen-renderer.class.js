@@ -11,7 +11,6 @@ class VictoryScreenRenderer {
 draw() {
     const boss = this.world.level.enemies.find(e => e instanceof Endboss);
     if (!boss || !boss.isDead) return;
-
     this.prepareContext();
     this.drawVictoryOverlay();
     this.drawVictoryTitle();
@@ -61,7 +60,6 @@ drawVictoryTitle() {
  */
 drawVictoryScore() {
     const score = this.world.character.score || 0;
-
     this.world.ctx.font = "30px Arial";
     this.world.ctx.shadowBlur = 5;
     this.world.ctx.fillStyle = "#fff";
@@ -78,14 +76,11 @@ drawVictoryButton() {
     const btnY = this.world.canvas.height / 2 + 60;
     const btnW = 200;
     const btnH = 50;
-
     this.world.ctx.shadowBlur = 0;
     this.world.ctx.fillStyle = "#222";
     this.world.ctx.fillRect(btnX, btnY, btnW, btnH);
-
     this.world.ctx.strokeStyle = "#fff";
     this.world.ctx.strokeRect(btnX, btnY, btnW, btnH);
-
     this.world.ctx.fillStyle = "#fff";
     this.world.ctx.font = "24px Arial";
     this.world.ctx.fillText("PLAY AGAIN", this.world.canvas.width / 2, btnY + 33);
@@ -101,7 +96,6 @@ saveVictoryButtonPosition() {
     const y = this.world.canvas.height / 2 + 60;
     const width = 200;
     const height = 50;
-
     this.world.victoryButton = {
         x,
         y,
@@ -110,5 +104,4 @@ saveVictoryButtonPosition() {
         visible: true
     };
 }
-
 }

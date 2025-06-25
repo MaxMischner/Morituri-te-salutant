@@ -54,10 +54,8 @@ static getTargetHitbox(target) {
  */
  static handleAlreadyHit(target) {
         if (target.alreadyHit) {
-            console.log("Ziel wurde kürzlich getroffen, überspringe.");
             return true;
         }
-
         target.alreadyHit = true;
         setTimeout(() => {
             target.alreadyHit = false;
@@ -71,12 +69,10 @@ static getTargetHitbox(target) {
  * @param {Object} target 
  */
  static applyHitEffects(obj, target) {
-        console.log("Treffer erkannt!", target);
         if (target instanceof Character) {
             if (target.isBlocking) {
                 obj.isStunned = true;
                 obj.stunTime = Date.now();
-                console.log("Angreifer (this) wurde gestunnt!", obj.isStunned, obj.stunTime);
             } else {
                 target.takeDamage(20);
             }
@@ -85,6 +81,7 @@ static getTargetHitbox(target) {
         }
 
     }
+
 /**
  * @private
  * Checks if the object is dead or invincible.
@@ -92,7 +89,6 @@ static getTargetHitbox(target) {
  */
 static isImmuneToDamage(obj) {
         if (obj.isDead || obj.isInvincible) {
-            console.log(`${obj.constructor.name} ist unverwundbar oder tot – kein Schaden.`);
             return true;
         }
         return false;
@@ -106,25 +102,17 @@ static isImmuneToDamage(obj) {
  */
  static handleBlock(obj, attacker) {
         if (obj instanceof Character && obj.isBlocking) {
-            console.log("Charakter hat den Angriff geblockt!");
             soundManager.play("block");
-
             obj.blockEnergy--;
             if (obj.blockEnergy <= 0) {
-                obj.isBlocking = false;
-                console.log("Blockenergie aufgebraucht!");
-            }
-
+                obj.isBlocking = false; }
             if (attacker instanceof Enemy) {
                 attacker.isStunned = true;
-                attacker.stunTime = Date.now();
-                console.log("Angreifer wurde gestunnt (über takeDamage)", attacker);
-            }
-
-            return true; // Attack blocked → no damage
+                attacker.stunTime = Date.now();}
+            return true; 
         }
         return false;
-    }
+ }
 
 /**
  * @private
@@ -133,7 +121,7 @@ static isImmuneToDamage(obj) {
  */
   static handleEnemyStun(obj) {
         if (obj instanceof Enemy && obj.isStunned) {
-            console.log("Gegner ist gestunnt und kann nicht angreifen!");
+
             return true;
         }
         return false;
@@ -145,10 +133,7 @@ static isImmuneToDamage(obj) {
  * @param {number} amount - The damage amount to apply.
  */
  static applyDamage(obj, amount) {
-        console.log("Treffer! Schaden verursacht:", amount);
         obj.energy -= amount;
-        console.log(`${obj.constructor.name} hat noch ${obj.energy} Lebenspunkte.`);
-
         if (obj.energy <= 0) {
             obj.energy = 0;
             obj.die("deathEnemy");
@@ -157,12 +142,11 @@ static isImmuneToDamage(obj) {
             obj.playHurtAnimation();
             obj.onHitEffect();
             soundManager.play("hit");
-
             MoveableObjectUtils.startInvincibility(obj);
             MoveableObjectUtils.resetHurtState(obj);
-        }
-    
+        }  
     }
+
 /**
  * @private
  * Starts invincibility period after taking damage.
@@ -171,7 +155,6 @@ static isImmuneToDamage(obj) {
         obj.isInvincible = true;
         setTimeout(() => {
             obj.isInvincible = false;
-            console.log(`${obj.constructor.name} ist nicht mehr unverwundbar.`);
         }, obj.invincibilityDuration);
     }
 
@@ -196,7 +179,6 @@ static startDeathAnimationInterval(obj) {
             MoveableObjectUtils.showFinalDeathFrame(obj);
             return;
         }
-
         MoveableObjectUtils.updateDeathAnimationFrame(obj);
     }, 150);
 }

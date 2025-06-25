@@ -1,6 +1,5 @@
 class GroundTile extends MoveabelObject {
     
-
     constructor(imagepath, x, y) {
         super().loadImage(imagepath);
         this.x = x;
@@ -18,6 +17,5 @@ class GroundTile extends MoveabelObject {
 draw(ctx, camera_x = 0) {
     ctx.drawImage(this.img, this.x - camera_x, this.y, this.width, this.height);
 }
-
 }
 

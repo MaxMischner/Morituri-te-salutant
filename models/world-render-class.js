@@ -10,28 +10,20 @@ class WorldRenderer  {
         this.debugMode = world.debugMode;
     }
 
-    /**
+/**
  * Renders the entire game world and UI during active gameplay.
  *//**
  * Renders the entire game world and UI during active gameplay.
  */
 drawPlayingState() {
     const ctx = this.ctx;
-
     this.world.checkCollisions();
     this.removeOffscreenClouds();
-
-this.ctx.translate(this.world.camera_x, 0);
-
-
-
+    this.ctx.translate(this.world.camera_x, 0);
     this.drawWorldElements();
     this.addEnemisDirektion(this.level.enemies);
     this.world.ui.drawAll();
-
-    
-
-ctx.translate(-this.world.camera_x, 0);
+    ctx.translate(-this.world.camera_x, 0);
     this.drawDebugHitboxes();
 }
 
@@ -77,25 +69,21 @@ addObjectsToMap(objects) {
     });
 }
 
-    /**
+/**
  * Renders a single object on the canvas, handling orientation and glow effects.
  * 
  * @param {Object} mo - The object to render.
  */
 addToMap(mo) {
-    
-
     this.ctx.save();
-
     const mirrored = mo.otherDiretion === true;
     this.drawObjectWithOptionalGlow(mo, mirrored);
-
     if (this.debugMode) {
         this.drawFrame(mo, this.getDebugColor(mo));
     }
-
     this.ctx.restore();
 }
+
 /**
  * Draws an object with optional glow effect and orientation.
  * 
@@ -107,27 +95,18 @@ drawObjectWithOptionalGlow(mo, mirrored) {
         this.ctx.translate(mo.x + mo.width, mo.y);
         this.ctx.scale(-1, 1);
         if (!mo.img || !mo.img.complete || mo.img.naturalWidth === 0) {
-            this.ctx.restore(); 
-            return;
-        }
+            this.ctx.restore(); return; }
         if (mo instanceof CollectableObject) {
-            this.applyGlowEffect(mo);
-        }
+            this.applyGlowEffect(mo); }
         this.ctx.drawImage(mo.img, 0, 0, mo.width, mo.height);
     } else {
         if (mo instanceof CollectableObject) {
-            this.applyGlowEffect(mo);
-        }
-
-        if (!mo.img || !mo.img.complete || !mo.img.naturalWidth) {
-            return;
-        }
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
-    }
+            this.applyGlowEffect(mo);}
+        if (!mo.img || !mo.img.complete || !mo.img.naturalWidth) {return;}
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);}
 }
 
-
-   /**
+/**
  * Applies a pulsing glow effect to collectable objects.
  * 
  * - Uses a sine-based animation for a pulsing glow.
@@ -137,13 +116,12 @@ drawObjectWithOptionalGlow(mo, mirrored) {
  */
 applyGlowEffect(mo) {
     if (!(mo instanceof CollectableObject)) return; // Only for Collectables
-
     let time = Date.now() / 500;
     let glow = Math.sin(time) * 10 + 20; // Pulsing effect
-
     this.ctx.shadowBlur = glow;
     this.ctx.shadowColor = this.getGlowColor(mo);
 }
+
 /**
  * Draws the debug frame for an object if debug mode is active.
  * 
@@ -155,7 +133,7 @@ drawDebugFrameForObject(mo) {
     }
 }
 
-   /**
+/**
  * Returns the glow color for a given collectable object.
  * 
  * - Blockstone → blue
@@ -228,16 +206,15 @@ drawOffsetBox(mo, color = 'orange') {
     this.ctx.beginPath();
     this.ctx.lineWidth = "2";
     this.ctx.strokeStyle = color;
-
     let x = mo.x + (mo.offset?.left || 0) + this.camera_x;
     let y = mo.y + (mo.offset?.top || 0);
     let width = mo.width - (mo.offset?.left || 0) - (mo.offset?.right || 0);
     let height = mo.height - (mo.offset?.top || 0) - (mo.offset?.bottom || 0);
-
     this.ctx.rect(x, y, width, height);
     this.ctx.stroke();
 }
-   /**
+
+/**
  * Adds enemies to the rendering map and handles their orientation and effects.
  * 
  * @param {Enemy[]} enemies - The enemies to render.
@@ -245,19 +222,13 @@ drawOffsetBox(mo, color = 'orange') {
 addEnemisDirektion(enemies) {
     enemies.forEach(mo => {
         if (!mo.img) return;
-
         this.ctx.save();
-
         if (mo.isStunned) {
             this.drawStunnedEnemy(mo);
         } else {
-            this.drawNormalEnemy(mo);
-        }
-
+            this.drawNormalEnemy(mo);}
         if (this.debugMode) {
-            this.drawFrame(mo, this.getDebugColor(mo));
-        }
-
+            this.drawFrame(mo, this.getDebugColor(mo));}
         this.ctx.restore();
     });
 }

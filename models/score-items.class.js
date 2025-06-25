@@ -2,9 +2,14 @@ class ScoreItem extends CollectableObject {
 
     constructor(imagepath,x,y) {
         super().loadImage(imagepath);
-        
         this.x = x;
         this.y = y;
+        this.offset = {
+       top: 5,
+        bottom: 5,
+        left: 5,
+        right: 5
+    };
     }
 
    /**
@@ -13,8 +18,7 @@ class ScoreItem extends CollectableObject {
  * @public
  */
 onCollect(character) {
-    character.score = (character.score || 0) + 100; // add 100 points
-    console.log("Punkte +100!");
+    character.score = (character.score || 0) + 100; 
+    
 }
-
 }

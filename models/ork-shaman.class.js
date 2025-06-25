@@ -12,9 +12,9 @@ class OrcShamane extends Enemy {
         
     };
     isCasting = false;
-castingFrame = 0;
-attackCooldown = 4000;
-lastAttackTime = 0;
+    castingFrame = 0;
+    attackCooldown = 4000;
+    lastAttackTime = 0;
 
     offset = {
         top: 10,
@@ -88,22 +88,16 @@ lastAttackTime = 0;
         this.loadImage('img/Orcs/Orc_Shaman/Idel/tile000.png')
         this.x = x;
         this.y = y;
-       
-    
         this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_IDEL);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);  
         this.loadImages(this.IMAGES_MAGIC);   
-    
         this.applyGravity(); 
-    
         this.animate();
     }
-    
-    
 
-    /**
+/**
  * Starts the Orc Shaman animation loop.
  * Handles direction, stun state, casting state, and attack logic.
  * @private
@@ -112,14 +106,10 @@ animate() {
     this.setStoppableInterval(() => {
         if (!this.world || !this.world.character) return;
         if (this.isDead) return;
-
         const character = this.world.character;
-
         this.updateFacingDirection(character);
-
         if (this.handleStunState()) return;
         if (this.handleCastingState(character)) return;
-
         this.handleAttackLogic(character);
     }, 1000 / 60);
 }
@@ -162,16 +152,13 @@ handleCastingState(character) {
     if (this.isCasting) {
         this.playAnimation(this.IMAGES_MAGIC, "ATTACK");
         this.castingFrame++;
-
         if (this.castingFrame >= this.IMAGES_MAGIC.length) {
             this.castLightningAt(character.x + character.width / 2);
             this.isCasting = false;
             this.castingFrame = 0;
             this.lastAttackTime = Date.now();
-        }
-        return true;
-    }
-    return false;
+        } return true;
+    }return false;
 }
 
 /**
@@ -182,7 +169,6 @@ handleCastingState(character) {
  */
 handleAttackLogic(character) {
     const distance = Math.abs(this.x - character.x);
-
     if (
         Date.now() - this.lastAttackTime > this.attackCooldown &&
         distance <= 500

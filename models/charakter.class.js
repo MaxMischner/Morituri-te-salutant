@@ -11,10 +11,9 @@ class Character extends MoveabelObject {
     blockHoldTime = 0;
     blockMaxHoldTime = 10000; 
    attackRange = {
-    offsetX: 0,  // Erhöhen Sie diesen Wert
-    width: 0,   // Erhöhen Sie diesen Wert
+    offsetX: 0,  
+    width: 0,   
 };
-
     offset = {
         top: 20,
         bottom: 0,
@@ -34,20 +33,15 @@ class Character extends MoveabelObject {
         super();
         this.movementInterval = null;
     this.animationInterval = null;
-        
-        
    }
-
-    
+ 
 /**
  * Starts the main character animation and input handling loop.
  */
 animate() {
     if (this.isDead) {
         this.playAnimation(this.IMAGES_DEAD, "DEAD");
-        return;
-    }
-
+        return; }
     this.setStoppableInterval(() => {
         this.checkFallIntoPit();
         this.handleMovement();
@@ -55,7 +49,6 @@ animate() {
         this.clampCharacterPosition();
         this.updateBlockStatus();
     }, 1000 / 60);
-
     this.setStoppableInterval(() => {
         this.handleAnimationState();
     }, 100);
@@ -69,7 +62,6 @@ checkFallIntoPit() {
     if (this.y > 600 && !this.isDead) {
         this.energy = 0;
         this.die();
-        console.log("Charakter ist in ein Loch gefallen!");
     }
 }
 
@@ -84,35 +76,27 @@ handleMovement() {
     const levelEnd = this.world.level.level_end_x - 50;
     const inEndZone = this.x >= endZoneStart;
     if (this.world.keyboard.RIGTH && this.x < levelEnd) {
-        this.moveRight();
-    }
+        this.moveRight(); }
     if (this.world.keyboard.LEFT) {
         if ((inEndZone && this.x > endZoneStart) || (!inEndZone && this.x > 25)) {
-            this.moveLeft();
-        }
+            this.moveLeft();}
     }
     this.world.camera_x = (this.x <= endZoneStart)
         ? -this.x + 25
         : -endZoneStart;
 }
 
-
 /**
  * Handles player combat input for attack, block, and jump.
  * @private
  */
 handleCombatInput() {
-    // Angriff
     if (this.world.keyboard.SPACE && !this.isAttacking) {
         this.attack();
     }
-
-    // Blocken
     if (this.world.keyboard.E && this.blockEnergy > 0 && !this.isBlocking) {
         this.startBlock();
     }
-
-    // Springen
     if (this.world.keyboard.UP && !this.isAboveGround()) {
         this.jump();
     }
@@ -126,7 +110,6 @@ clampCharacterPosition() {
     const endZoneStart = this.world.level.level_end_x - 720;
     const levelEnd = this.world.level.level_end_x - 50;
     let inEndZone = this.x >= endZoneStart;
-
     if (this.x < 25) {
         this.x = 25;
     } else if (this.x > levelEnd) {
@@ -163,13 +146,10 @@ handleAnimationState() {
  */
 updateBlockAnimation() {
     this.playAnimation(this.IMAGES_BLOCK, "BLOCK");
-
     if (this.currentImage >= 4) {
         this.blockActive = true;
         this.blockHoldTime += 100;
-
         this.currentImage = 4;
-
         if (this.blockHoldTime >= 3000 || this.blockEnergy <= 0) {
             this.isBlocking = false;
             this.blockActive = false;
@@ -210,7 +190,6 @@ updateHurtAnimation() {
 updateDeathAnimation() {
     if (!this.deadAnimationPlayed) {
         this.playAnimation(this.IMAGES_DEAD, "DEAD");
-
         setTimeout(() => {
             this.currentImage = this.IMAGES_DEAD.length - 1;
             this.img = this.imageCache[this.IMAGES_DEAD[this.currentImage]];
@@ -241,7 +220,6 @@ startBlock() {
         this.isBlocking = true;
         this.blockActive = true;
         this.blockStartTime = Date.now();
-        console.log("Block started");
     }
 }
 
@@ -255,7 +233,6 @@ updateBlockStatus() {
         if (currentTime - this.blockStartTime >= this.blockDuration || this.blockEnergy <= 0) {
             this.isBlocking = false;
             this.blockActive = false;
-            console.log("Block ended");
         }
     }
 }

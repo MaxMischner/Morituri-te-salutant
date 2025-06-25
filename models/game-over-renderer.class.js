@@ -3,14 +3,13 @@ class GameOverRenderer {
         this.world = world;
     }
 
-  /**
+/**
  * Draws the game over screen if the character is dead.
  * Includes overlay, death title, retry button, and stores retry button position.
  * @public
  */
 draw() {
     if (!this.world.character || !this.world.character.isDead) return;
-
     this.drawOverlay();
     this.drawDeathTitle();
     this.drawRetryButton();
@@ -51,7 +50,6 @@ getFloatingTitleTransform() {
     const time = Date.now() / 500;
     const offset = Math.sin(time) * 3;
     const scale = 1 + Math.sin(time) * 0.03;
-
     return {
         x: this.world.canvas.width / 2,
         y: this.world.canvas.height / 2 + offset,
@@ -102,10 +100,8 @@ saveRetryButtonPosition() {
     const y = this.world.canvas.height / 2 + 60;
     const width = 160;
     const height = 40;
-
     this.world.retryButton = {
         x, y, width, height, visible: true
     };
 }
-
 }

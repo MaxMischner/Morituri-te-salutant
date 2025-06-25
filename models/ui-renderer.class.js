@@ -1,6 +1,5 @@
 class UIRenderer {
 
-    
     constructor(world) {
         this.world = world;
         this.healthBarRenderer = new HealthBarRenderer(world);
@@ -9,9 +8,8 @@ class UIRenderer {
         this.menuRenderer = new MenuRenderer(world);
         this.gameOverRenderer = new GameOverRenderer(world);
         this.victoryScreenRenderer = new VictoryScreenRenderer(world);
-
         this.soundButton = {
-            x: 230, // direkt rechts neben der Healthbar (20 + 200 + 10)
+            x: 230, 
             y: 20,
             width: 30,
             height: 30,
@@ -20,9 +18,6 @@ class UIRenderer {
         };
         this.soundButton.iconOn.src = "img/Interface/Icons_31.png";
         this.soundButton.iconOff.src = "img/Interface/Icons_29.png";
-
-        
-       
     }
 
 /**
@@ -76,7 +71,6 @@ drawSoundButton() {
     const ctx = this.world.ctx;
     const btn = this.soundButton;
     if (!btn.iconOn.complete || !btn.iconOff.complete) return;
-
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
     const icon = soundManager.enabled ? btn.iconOn : btn.iconOff;
@@ -91,14 +85,11 @@ drawSoundButton() {
 drawStartScreen() {
     const ctx = this.world.ctx;
     const canvas = this.world.canvas;
-
     ctx.save();
     ctx.setTransform(1, 0, 0, 1, 0, 0);
-
     this.drawStartBackground(canvas);
     this.drawGameTitle(canvas);
     this.drawPlayButton(ctx);
-
     ctx.restore();
 }
 
@@ -109,7 +100,6 @@ drawStartScreen() {
  */
 drawStartBackground(canvas) {
     const ctx = this.world.ctx;
-
     if (this.menuRenderer.startBackground.complete) {
         ctx.drawImage(this.menuRenderer.startBackground, 0, 0, canvas.width, canvas.height);
     } else {
@@ -125,7 +115,6 @@ drawStartBackground(canvas) {
  */
 drawGameTitle(canvas) {
     const ctx = this.world.ctx;
-
     ctx.fillStyle = "#fff";
     ctx.font = "bold 35px Arial";
     ctx.textAlign = "center";
@@ -139,23 +128,16 @@ drawGameTitle(canvas) {
  */
 drawPlayButton(ctx) {
     const btn = this.world.playButton;
-
     if (!this.playButtonImage) {
         this.playButtonImage = new Image();
-        this.playButtonImage.src = "img/Interface/69.png";
-    }
-
+        this.playButtonImage.src = "img/Interface/69.png";}
     if (this.playButtonImage.complete) {
         ctx.drawImage(this.playButtonImage, btn.x, btn.y, btn.width, btn.height);
     } else {
         ctx.fillStyle = "#f00";
-        ctx.fillRect(btn.x, btn.y, btn.width, btn.height);
-    }
-
+        ctx.fillRect(btn.x, btn.y, btn.width, btn.height);}
     ctx.fillStyle = "#fff";
     ctx.font = "bold 24px Arial";
     ctx.fillText("Play", btn.x + btn.width / 2, btn.y + btn.height / 2 + 8);
 }
-
-
 }

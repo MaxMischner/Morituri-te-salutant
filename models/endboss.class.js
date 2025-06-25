@@ -1,19 +1,16 @@
 class Endboss extends Enemy{
-
-    height = 200;
-    width = 200; 
+height = 200;
+width = 200; 
 isActive = false;
 hasIntroStarted = false;
 bossNameOpacity = 0;
 bossNameSize = 80;
 bossNameY = 0;
-
-attackDuration = {
-    windup: 600,
-    strike: 500,
-    cooldown: 1500
+    attackDuration = {
+        windup: 600,
+        strike: 500,
+        cooldown: 1500
 };
-
     offset = {
         top: 40,
         bottom: 0,
@@ -22,7 +19,7 @@ attackDuration = {
     }
     attackRangeValue = 70;
 
-     attackRange = {
+        attackRange = {
         offsetX: 10,
         width: 30,
     };
@@ -93,22 +90,15 @@ attackDuration = {
         this.y = 200;
         this.speed = 0;
         this.isActive = false;
-        this.bossNameSize = 48; // statt 80
-        this.bossNameY = 180;   // etwas höher als vorher, da kleiner
-
+        this.bossNameSize = 48; 
+        this.bossNameY = 180;   
         this.bossNameOpacity = 0;
-
-
-
        this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_IDEL);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);  
         this.loadImages(this.IMAGES_ATTACK); 
-        
-        this.applyGravity(); 
-
-        
+        this.applyGravity();  
     }
 
 /**
@@ -126,8 +116,6 @@ animate() {
     }, 1000 / 60);
 }
 
-
-
 /**
  * Updates the boss behavior and animation state.
  * Delegates behavior handling to specialized methods.
@@ -136,17 +124,13 @@ animate() {
 updateBossBehavior() {
     if (!this.world || !this.world.character) return;
     if (this.isDead) return;
-
     this.checkActivation();
-
     if (!this.isActive) {
         this.playAnimation(this.IMAGES_IDEL, "IDLE");
         return;
     }
-
     if (this.handleStunState()) return;
     if (this.handleOngoingAttack()) return;
-
     this.handleMovementAndAttack();
 }
 
@@ -157,11 +141,9 @@ updateBossBehavior() {
 checkActivation() {
     const character = this.world.character;
     const activationX = this.world.level.level_end_x - 720;
-
     if (!this.isActive && character.x >= activationX) {
         this.isActive = true;
         this.speed = 0.3;
-        console.log("Boss activated!");
     }
 }
 
@@ -203,7 +185,6 @@ handleOngoingAttack() {
 handleMovementAndAttack() {
     const character = this.world.character;
     this.otherDiretion = this.x > character.x;
-
     if (Math.abs(this.x - character.x) > this.attackRangeValue) {
         this.x += this.otherDiretion ? -this.speed : this.speed;
         this.playAnimation(this.IMAGES_RUN, "RUN");
@@ -222,10 +203,8 @@ triggerIntro() {
     this.hasIntroStarted = true;
     this.isActive = true;
     this.world.character.canMove = false;
-
     let steps = 30;
     let stepSize = 3;
-
     this.setStoppableInterval(() => {
         if (steps-- > 0) {
             this.x -= stepSize;
@@ -233,9 +212,8 @@ triggerIntro() {
             this.startBossIntroText();
             this.stopAllIntervals();
         }
-    }, 50);
-}
-
+    }, 50);}
+    
 }
 
            

@@ -68,7 +68,6 @@ applyGravity() {
         if (this.isAboveGround() || this.speedY > 0) {
             this.y -= this.speedY;
             this.speedY -= this.acceleration;
-
             const tile = this.getGroundTileBelow();
             if (tile) {
                 this.speedY = 0;
@@ -157,17 +156,13 @@ moveRight(blockCheck = true) {
  */
 attack() {
     if (this.isAttacking || this.attackOnCooldown) return;
-
     this.isAttacking = true;
     this.attackOnCooldown = true;
     this.currentImage = 0;
-
     soundManager.play("attack");
-
     setTimeout(() => {
         this.isAttacking = false;
     }, 500);
-
     setTimeout(() => {
         this.attackOnCooldown = false;
     }, 800); 
@@ -184,8 +179,7 @@ isAttackFrameActive() {
     return i >= this.attackHitFrame && i <= this.attackHitFrame + 2;
 }
 
-
-  /**
+/**
  * Checks if an attack hits the given target and applies effects.
  * @param {Object} target - The target object (Character or Enemy).
  * @returns {boolean} Whether the target was hit.
@@ -199,13 +193,13 @@ hit(target) {
     MoveableObjectUtils.applyHitEffects(this, target);
     return true;
 }
-    /**
+
+/**
  * Applies damage to the object and handles blocking, death, and hurt logic.
  * @param {number} amount - The damage amount to apply.
  * @param {Object|null} attacker - The attacking entity, if any.
  */
 takeDamage(amount = 20, attacker = null) {
-    console.log(`${this.constructor.name} takeDamage aufgerufen`);
     if (MoveableObjectUtils.isImmuneToDamage(this)) return;
     if (MoveableObjectUtils.handleBlock(this, attacker)) return;
     if (MoveableObjectUtils.handleEnemyStun(this)) return;
@@ -219,7 +213,6 @@ takeDamage(amount = 20, attacker = null) {
 onHitEffect() {
     const oldImg = this.img;
     this.img = null;  
-
     setTimeout(() => {
         this.img = oldImg;
     }, 200);
@@ -236,8 +229,7 @@ onHitEffect() {
         this.speed = 0;
         this.playDeathAnimation(this.IMAGES_DEAD, 'DEAD'  );
         soundManager.play(target);
-        console.log(`${this.constructor.name} is dead.`);
-    }
+}
     
 /**
  * Plays an animation by cycling through the given image frames.
@@ -249,17 +241,13 @@ onHitEffect() {
 playAnimation(images, type = "RUN") {
     const now = Date.now();
     const interval = this.animationSpeeds[type] || 150;
-
     if (now - this.animationTimer < interval) {
         return;
     }
-
     this.animationTimer = now;
-
     const i = this.currentImage % images.length;
     const path = images[i];
     this.img = this.imageCache[path] || this.img;
-
     this.currentImage++;
 }
 
@@ -270,18 +258,14 @@ playAnimation(images, type = "RUN") {
  */
 playHurtAnimation() {
     if (!this.IMAGES_HURT || this.IMAGES_HURT.length === 0) {
-        console.warn("WARNUNG → IMAGES_HURT nicht definiert!");
         return;
     }
-
     this.playAnimation(this.IMAGES_HURT, "HURT");
-
     setTimeout(() => {
         this.currentImage = 0;
     }, this.IMAGES_HURT.length * 100);
 }
 
-    
 /**
  * Plays the death animation sequence for this object.
  */
@@ -303,17 +287,14 @@ playDeathAnimation() {
  */
 isColliding(mo) {
     const moX = mo.x;
-
     const thisRight = this.x + this.width - this.offset.right;
     const thisBottom = this.y + this.height - this.offset.bottom;
     const thisLeft = this.x + this.offset.left;
     const thisTop = this.y + this.offset.top;
-
     const moRight = moX + mo.width - mo.offset.right;
     const moBottom = mo.y + mo.height - mo.offset.bottom;
     const moLeft = moX + mo.offset.left;
     const moTop = mo.y + mo.offset.top;
-
     return thisRight >= moLeft &&
            thisBottom >= moTop &&
            thisLeft < moRight &&
@@ -329,7 +310,6 @@ isOnGroundTile() {
     if (!this.world?.level?.groundTiles) {
         return false; 
     }
-
     return this.world.level.groundTiles.some(tile =>
         this.y + this.height - this.offset.bottom >= tile.y &&
         this.y + this.height - this.offset.bottom <= tile.y + 5 &&
@@ -345,7 +325,6 @@ isOnGroundTile() {
  */
 getGroundTileBelow() {
     if (!this.world?.level?.groundTiles) return null;
-
     return this.world.level.groundTiles.find(tile =>
         this.y + this.height - this.offset.bottom >= tile.y &&
         this.y + this.height - this.offset.bottom <= tile.y + tile.height &&

@@ -9,8 +9,6 @@ class Enemy extends MoveabelObject {
     IMAGES_IDEL = [];
     attackCooldown = 2000;  
     lastAttackTime = 0;
-
-
     turning = false;         
     turnWaitTime = 1000;     
     attackState = "idle"; 
@@ -29,9 +27,7 @@ attackRangeValue = 45;
  */
 updateAttack() {
     if (this.attackState === "idle") return;
-
     const elapsed = Date.now() - this.attackTimer;
-
     if (this.attackState === "windup") {
         this.handleWindupPhase(elapsed);
     } else if (this.attackState === "strike") {
@@ -48,7 +44,6 @@ updateAttack() {
  */
 handleWindupPhase(elapsed) {
     this.playAnimation(this.IMAGES_ATTACK, "ATTACK");
-
     if (elapsed >= this.attackDuration.windup) {
         this.attackState = "strike";
         this.attackTimer = Date.now();
@@ -62,7 +57,6 @@ handleWindupPhase(elapsed) {
  */
 handleWindupPhase(elapsed) {
     this.playAnimation(this.IMAGES_ATTACK, "ATTACK");
-
     if (elapsed >= this.attackDuration.windup) {
         this.attackState = "strike";
         this.attackTimer = Date.now();
@@ -76,13 +70,11 @@ handleWindupPhase(elapsed) {
  */
 handleStrikePhase(elapsed) {
     this.playAnimation(this.IMAGES_ATTACK, "ATTACK");
-
     if (elapsed >= this.attackDuration.strike) {
         const target = this.world.character;
         if (this.isAttackTargetInRange(target)) {
             target.takeDamage(20, this);
         }
-
         this.attackState = "cooldown";
         this.attackTimer = Date.now();
     }
@@ -95,13 +87,10 @@ handleStrikePhase(elapsed) {
  */
 handleCooldownPhase(elapsed) {
     this.playAnimation(this.IMAGES_IDEL, "IDLE");
-
     if (elapsed >= this.attackDuration.cooldown) {
         this.attackState = "idle";
     }
 }
-
-
 
 /**
  * Initiates the attack sequence by setting the state to 'windup' and starting the attack timer.
@@ -110,13 +99,9 @@ handleCooldownPhase(elapsed) {
  */
 startAttack() {
     if (this.attackState !== "idle") return;
-
     this.attackState = "windup";
     this.attackTimer = Date.now();
 }
-
-
-
 
 /**
  * Executes the enemy patrol behavior.
@@ -170,23 +155,17 @@ handleAttackState() {
 handleTurning() {
     if (this.turning) {
         this.playAnimation(this.IMAGES_IDEL, "IDLE");
-
         if (Date.now() - this.turnTimer >= this.turnWaitTime) {
             this.turning = false;
             this.direction *= -1;
             this.otherDiretion = this.direction < 0;
         }
-        return true;
-    }
-
+        return true;}
     const tileAhead = this.getGroundTileAhead();
-
     if (!tileAhead) {
         this.turning = true;
         this.turnTimer = Date.now();
-        return true;
-    }
-
+        return true;}
     return false;
 }
 
@@ -197,7 +176,6 @@ handleTurning() {
 handleMovement() {
     this.x += this.direction * this.speed;
     this.otherDiretion = this.direction < 0;
-
     if (this.world?.level?.groundTiles?.some(tile => this.isBlockingTile(tile))) {
         this.x -= this.direction * this.speed;
         this.turning = true;
@@ -221,7 +199,6 @@ tryAttack(target) {
     }
 }
 
-
 /**
  * Attempts to hit the target during an active attack frame.
  * Delegates hit calculation and applies effects based on the target's state.
@@ -231,20 +208,13 @@ tryAttack(target) {
  */
 hit(target) {
     if (!this.isAttackFrameActive()) {
-        console.log("Kein aktiver Angriffsframe");
         return false;
     }
-
-    console.log("Enemy hit-Methode aufgerufen", target);
-
     const isHit = this.calculateHit(target);
 
     if (isHit) {
         this.applyHitEffects(target);
-    } else {
-        console.log("Kein Treffer");
-    }
-
+    } 
     return isHit;
 }
 
@@ -264,22 +234,15 @@ calculateHit(target) {
  * @private
  */
 applyHitEffects(target) {
-    console.log("Treffer erkannt!", target);
-
     if (target instanceof Character) {
         if (target.isBlocking) {
-            console.log("Charakter blockt den Angriff!");
             this.isStunned = true;
             this.stunTime = Date.now();
-            console.log("Gegner wurde gestunnt!", this.isStunned, this.stunTime);
         } else {
-            console.log("Charakter nimmt Schaden!");
             target.takeDamage(20);
         }
     }
 }
-
-
 
 /**
  * Checks whether the target is within the enemy's attack range based on direction.
@@ -288,16 +251,12 @@ applyHitEffects(target) {
  * @private
  */
 isAttackTargetInRange(target) {
-    let facingLeft = this.otherDiretion;
-    let inRange = false;
-
-    if (facingLeft) {
-        inRange = this.x >= target.x && this.x - target.x <= this.attackRangeValue;
-    } else {
-        inRange = target.x >= this.x && target.x - this.x <= this.attackRangeValue;
-    }
-
-    return inRange;
+    const dx = target.x - this.x;
+    const isFacingLeft = this.otherDiretion;
+    if (isFacingLeft && dx > 0) return false;
+    if (!isFacingLeft && dx < 0) return false;
+    const distance = Math.abs(dx);
+    return distance >= 10 && distance <= this.attackRangeValue;
 }
 
 /**
@@ -306,20 +265,16 @@ isAttackTargetInRange(target) {
  */
 showStunEffect() {
     if (!this.img || !this.world?.ctx) return;
-
     const ctx = this.world.ctx;
     ctx.save();
-
     ctx.globalAlpha = 0.5 + Math.sin(Date.now() / 100) * 0.5;
     ctx.shadowBlur = 20;
     ctx.shadowColor = "yellow";
-
     if (this.otherDiretion) {
         this.drawStunEffectFacingLeft(ctx);
     } else {
         this.drawStunEffectFacingRight(ctx);
     }
-
     ctx.restore();
 }
 
@@ -332,14 +287,11 @@ drawStunEffectFacingLeft(ctx) {
     ctx.translate(this.x + this.width, this.y);
     ctx.scale(-1, 1);
     ctx.drawImage(this.img, 0, 0, this.width, this.height);
-
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
     ctx.fillStyle = "yellow";
     ctx.font = "bold 24px Arial";
     ctx.textAlign = "center";
-    ctx.fillText("STUN", this.width / 2, -10);
-
     this.drawStunStars(ctx, true);
 }
 
@@ -350,14 +302,12 @@ drawStunEffectFacingLeft(ctx) {
  */
 drawStunEffectFacingRight(ctx) {
     ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-
     ctx.globalAlpha = 1;
     ctx.shadowBlur = 0;
     ctx.fillStyle = "yellow";
     ctx.font = "bold 24px Arial";
     ctx.textAlign = "center";
     ctx.fillText("STUN", this.x + this.width / 2, this.y - 10);
-
     this.drawStunStars(ctx, false);
 }
 
@@ -371,25 +321,16 @@ drawStunEffectFacingRight(ctx) {
 drawStunStars(ctx, flipped = false) {
     let time = Date.now() / 200;
     let starCount = 3;
-
     for (let i = 0; i < starCount; i++) {
         let angle = time + (i * (Math.PI * 2 / starCount));
         let offsetX = Math.cos(angle) * 30;
         let offsetY = Math.sin(angle) * 10;
-
-        let starX = flipped
-            ? this.width / 2 + offsetX
-            : this.x + this.width / 2 + offsetX;
-
-        let starY = flipped
-            ? -20 + offsetY
-            : this.y - 20 + offsetY;
-
+        let starX = flipped ? this.width / 2 + offsetX : this.x + this.width / 2 + offsetX;
+        let starY = flipped ? -20 + offsetY : this.y - 20 + offsetY;
         ctx.beginPath();
         ctx.arc(starX, starY, 5, 0, Math.PI * 2);
         ctx.fillStyle = "gold";
-        ctx.fill();
-    }
+        ctx.fill();}
 }
 
 /**
@@ -401,17 +342,13 @@ drawStunStars(ctx, flipped = false) {
 getGroundTileAhead() {
     const checkX = this.x + (this.direction * this.width / 2);
     const checkY = this.y + this.height + 5;
-
     if (!this.world?.level?.groundTiles) return null;
-
     return this.world.level.groundTiles.find(tile => {
         return (
             checkX + this.width / 2 >= tile.x &&
             checkX <= tile.x + tile.width &&
             checkY >= tile.y &&
-            checkY <= tile.y + tile.height
-        );
+            checkY <= tile.y + tile.height);
     });
 }
-
 }

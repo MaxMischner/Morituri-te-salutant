@@ -3,8 +3,6 @@ class OrkWorrier extends Enemy {
     height = 80 ;
     width = 80;
     energy;
-    
-    
     lastAttackTime = 0;
     animationSpeeds = {
         IDLE: 150,
@@ -69,26 +67,23 @@ class OrkWorrier extends Enemy {
         this.y = y;
         this.speed = 0.15 + Math.random() * 0.25;
         this.energy= 40;
-        
         this.alreadyHit = false;
          this.isInvincible = false;
-    this.invincibilityDuration = 1000;
-
-    
+        this.invincibilityDuration = 1000;
         this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_IDEL);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);  
         this.loadImages(this.IMAGES_ATTACK);   
-    
         this.applyGravity(); 
-    
         this.animate();
     }
     
-    
-
- animate() {
+/**
+ * Starts a controllable animation loop that makes the enemy patrol.
+ * This runs at approximately 60 frames per second using a stoppable interval.
+ */
+animate() {
     this.setStoppableInterval(() => {
         this.patrol();
     }, 1000 / 60);

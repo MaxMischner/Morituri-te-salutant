@@ -20,7 +20,7 @@ IMAGES_RUN = [
     'img/Heros/Gladiator_2/Run/tile009.png'
 ];
 
-IMAGES_IDEL = [
+IMAGES_IDLE  = [
     'img/Heros/Gladiator_2/Idel/tile000.png',
     'img/Heros/Gladiator_2/Idel/tile001.png',
     'img/Heros/Gladiator_2/Idel/tile002.png',
@@ -73,16 +73,13 @@ IMAGES_DEAD = [
     'img/Heros/Gladiator_2/Dead/tile002.png'
 ];
 
-
-  
     constructor(){
         super();
-        
         this.loadImage('img/Heros/Gladiator_2/Idle_2/tile000.png')
         this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_JUMP);
         this.loadImages(this.IMAGES_ATTACK);
-        this.loadImages(this.IMAGES_IDEL);
+        this.loadImages(this.IMAGES_IDLE );
         this.loadImages(this.IMAGES_IDEL2);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);

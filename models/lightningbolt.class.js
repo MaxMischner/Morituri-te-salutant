@@ -7,15 +7,12 @@ class LightningBolt extends MoveabelObject {
     currentFrame = 0;
     frameTimer = 0;
     frameInterval = 100;
-
     offset = {
     top: 10,
     bottom: 10,
     left: 10,
     right: 10
 };
-
-
     IMAGES_LIGHTNING = [
         'img/Orcs/Orc_Shaman/Lightning bolt/tile000.png',
         'img/Orcs/Orc_Shaman/Lightning bolt/tile001.png',
@@ -35,15 +32,12 @@ class LightningBolt extends MoveabelObject {
         this.y = y;
         this.target = target;
         this.impactY = this.target.y + this.target.height - 10;
-
         this.loadImage(this.IMAGES_LIGHTNING[0]);
         this.loadImages(this.IMAGES_LIGHTNING);
-        
-
         this.animate();
     }
 
-    /**
+ /**
  * Starts the Lightning Bolt animation loop.
  * Handles movement, frame updates, and impact detection.
  * @private
@@ -54,7 +48,6 @@ animate() {
             clearInterval(interval);
             return;
         }
-
         this.moveDown();
         this.updateAnimationFrame();
         this.handleImpact();
@@ -78,11 +71,8 @@ updateAnimationFrame() {
     if (now - this.frameTimer > this.frameInterval) {
         this.frameTimer = now;
         this.currentFrame++;
-
         if (this.currentFrame >= this.IMAGES_LIGHTNING.length) {
-            this.currentFrame = this.IMAGES_LIGHTNING.length - 1;
-        }
-
+            this.currentFrame = this.IMAGES_LIGHTNING.length - 1; }
         const path = this.IMAGES_LIGHTNING[this.currentFrame];
         this.img = this.imageCache[path];
     }
@@ -111,13 +101,9 @@ checkHit() {
     const boltCenter = this.x + this.width / 2;
     const playerLeft = player.x + player.offset.left;
     const playerRight = player.x + player.width - player.offset.right;
-
     if (boltCenter >= playerLeft && boltCenter <= playerRight) {
         player.takeDamage(30, null);
-        console.log("Lightning Bolt hits the player!");
-    } else {
-        console.log("Lightning Bolt misses the player.");
-    }
+    } 
 }
 
 /**
@@ -135,5 +121,4 @@ scheduleRemoval() {
         }
     }, 1000);
 }
-
 }

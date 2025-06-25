@@ -71,10 +71,8 @@ IMAGES_DEAD = [
     'img/Heros/Gladiator_1/Dead/tile002.png'
 ]
 
-  
     constructor(){
         super();
-        
         this.loadImage('img/Heros/Gladiator_1/Idle_2/tile000.png')
         this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_JUMP);
