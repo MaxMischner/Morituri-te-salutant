@@ -311,11 +311,12 @@ isOnGroundTile() {
         return false; 
     }
     return this.world.level.groundTiles.some(tile =>
-        this.y + this.height - this.offset.bottom >= tile.y &&
-        this.y + this.height - this.offset.bottom <= tile.y + 5 &&
-        this.x + this.width - this.offset.right > tile.x &&
-        this.x + this.offset.left < tile.x + tile.width
-    );
+    this.y + this.height - this.offset.bottom >= tile.y &&
+    this.y + this.height - this.offset.bottom <= tile.y + 5 &&
+    this.x + this.width - this.offset.right  > tile.x &&  // 15px optische Korrektur rechts
+    this.x + this.offset.left  < tile.x + tile.width      // 15px optische Korrektur links
+);
+
 }
 
 /**
@@ -328,8 +329,8 @@ getGroundTileBelow() {
     return this.world.level.groundTiles.find(tile =>
         this.y + this.height - this.offset.bottom >= tile.y &&
         this.y + this.height - this.offset.bottom <= tile.y + tile.height &&
-        this.x + this.width - this.offset.right > tile.x &&
-        this.x + this.offset.left < tile.x + tile.width
+        this.x + this.width - this.offset.right -15 > tile.x &&
+        this.x + this.offset.left +15 < tile.x + tile.width
     );
 }
 

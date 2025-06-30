@@ -187,9 +187,10 @@ handleAttackLogic(character) {
  * @private
  */
 castLightningAt(targetX) {
+    if (this.world?.character?.isDead) return; 
     soundManager.play("magic");
-    const bolt = new LightningBolt(targetX, 0, this.world.character); // comes from above
-    bolt.world = this.world; // LightningBolt needs access to world
+    const bolt = new LightningBolt(targetX, 0, this.world.character);
+    bolt.world = this.world;
     this.world.level.activeEffects.push(bolt);
 }
 

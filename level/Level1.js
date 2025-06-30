@@ -148,10 +148,9 @@ new GroundTile('./img/Plattform/1Tiles/Tile_30.png', 1120, 322),
 new GroundTile('./img/Plattform/1Tiles/Tile_31.png', 1152, 322),
 
 
-new GroundTile('./img/Plattform/1Tiles/Tile_10.png', 1312, 450),
-new GroundTile('./img/Plattform/1Tiles/Tile_12.png', 1344, 450),
-new GroundTile('./img/Plattform/1Tiles/Tile_01.png', 1312, 428),
-new GroundTile('./img/Plattform/1Tiles/Tile_03.png', 1344, 428),
+
+new GroundTile('./img/Plattform/1Tiles/Tile_29.png', 1312, 428),
+new GroundTile('./img/Plattform/1Tiles/Tile_31.png', 1344, 428),
 
 new GroundTile('./img/Plattform/1Tiles/Tile_29.png', 1472, 350),
 new GroundTile('./img/Plattform/1Tiles/Tile_31.png', 1504, 350),
