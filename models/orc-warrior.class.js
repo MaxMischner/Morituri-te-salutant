@@ -9,6 +9,7 @@ class OrkWorrier extends Enemy {
         RUN: 120,
         ATTACK: 180,
         JUMP: 150,
+        HURT: 100,
         
     };
     

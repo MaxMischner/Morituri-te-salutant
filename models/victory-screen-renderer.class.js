@@ -11,6 +11,9 @@ class VictoryScreenRenderer {
 draw() {
     const boss = this.world.level.enemies.find(e => e instanceof Endboss);
     if (!boss || !boss.isDead) return;
+
+    this.world.character.canMove = false;  
+
     this.prepareContext();
     this.drawVictoryOverlay();
     this.drawVictoryTitle();
@@ -19,6 +22,7 @@ draw() {
     this.saveVictoryButtonPosition();
     this.world.ctx.restore();
 }
+
 
 /**
  * Prepares the canvas context for drawing the victory screen.

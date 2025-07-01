@@ -9,12 +9,31 @@ let keyboard = new Keyboard();
  * @public
  */
 function init() {
+    cleanupOldWorld();
     canvas = document.getElementById("canvas");
     keyboard = new Keyboard();
     const gameStateManager = new GameStateManager(null);
     world = new World(canvas, keyboard, gameStateManager);
     gameStateManager.setWorld(world);
     world.start();
+}
+
+/**
+ * Cleans up the old world before initializing a new one.
+ * Stops the old world's drawing loop, world timers, and event listeners.
+ * @private
+ */
+function cleanupOldWorld() {
+    if (world) {
+        world.stopDrawingLoop();
+        world.stopWorldTimers();
+        if (world.mouseHandler) {
+            world.canvas.removeEventListener("click", world.mouseHandler);
+        }
+        if (world.touchHandler) {
+            world.canvas.removeEventListener("touchstart", world.touchHandler);
+        }
+    }
 }
 
 /**
@@ -27,7 +46,7 @@ function init() {
 function checkOrientation() {
     const overlay = document.getElementById('rotate-overlay');
 
-    const isMobile = window.innerWidth < 480;
+    const isMobile = window.innerWidth < 1025;
     const isPortrait = window.innerHeight > window.innerWidth;
 
     overlay.style.display = (isMobile && isPortrait) ? 'flex' : 'none';

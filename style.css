@@ -174,13 +174,13 @@ body{
         justify-content: flex-start;
         align-items: center;
         height: 100vh;
-        padding-top: 10px;
+        
     }
 
     canvas {
-        width: 85vw;
+        width: 98vw;
         height: auto;
-        max-height: 70vh;
+        max-height: 73vh;
     }
     #mobile-controls-left,
 #mobile-controls-right {
@@ -199,13 +199,13 @@ body{
         justify-content: flex-start;
         align-items: center;
         height: 100vh;
-        padding-top: 10px;
+        
     }
 
     canvas {
-        width: 85vw;
+        width: 98vw;
         height: auto;
-        max-height: 70vh;
+        max-height: 73vh;
     }
     #mobile-controls-left,
 #mobile-controls-right {

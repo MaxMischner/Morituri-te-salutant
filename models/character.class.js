@@ -4,13 +4,13 @@ class Character extends MoveabelObject {
     score = 0;
     blockEnergy = 1;
     score = 0;
-
+    canMove = true;
     isBlocking = false;
     blockFrame = 0;
     blockActive = false;
     blockHoldTime = 0;
     blockMaxHoldTime = 10000; 
-   attackRange = {
+    attackRange = {
     offsetX: 0,  
     width: 0,   
 };
@@ -26,15 +26,16 @@ class Character extends MoveabelObject {
         RUN: 25,
         ATTACK: 80,
         JUMP: 60,
-        BLOCK: 100
+        BLOCK: 100,
+        HURT:120
     };
     
    constructor(){
         super();
         this.movementInterval = null;
-    this.animationInterval = null;
-     this.groundCheckLeft = 15;
-    this.groundCheckRight = 15;
+        this.animationInterval = null;
+        this.groundCheckLeft = 15;
+        this.groundCheckRight = 15;
    }
  
 /**
@@ -44,14 +45,14 @@ animate() {
     if (this.isDead) {
         this.playAnimation(this.IMAGES_DEAD, "DEAD");
         return; }
-    this.setStoppableInterval(() => {
+        this.setStoppableInterval(() => {
         this.checkFallIntoPit();
         this.handleMovement();
         this.handleCombatInput();
         this.clampCharacterPosition();
         this.updateBlockStatus();
     }, 1000 / 60);
-    this.setStoppableInterval(() => {
+        this.setStoppableInterval(() => {
         this.handleAnimationState();
     }, 100);
 }
@@ -238,4 +239,21 @@ updateBlockStatus() {
         }
     }
 }
+
+handleMovement() {
+    if (!this.canMove) return;  
+    const endZoneStart = this.world.level.level_end_x - 720;
+    const levelEnd = this.world.level.level_end_x - 50;
+    const inEndZone = this.x >= endZoneStart;
+    if (this.world.keyboard.RIGTH && this.x < levelEnd) {
+        this.moveRight();
+    }if (this.world.keyboard.LEFT) {
+        if ((inEndZone && this.x > endZoneStart) || (!inEndZone && this.x > 25)) {
+            this.moveLeft();
+        }
+    }this.world.camera_x = (this.x <= endZoneStart)
+        ? -this.x + 25
+        : -endZoneStart;
+}
+
 }

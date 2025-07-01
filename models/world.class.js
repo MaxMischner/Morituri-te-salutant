@@ -69,18 +69,17 @@ initUIElements() {
  * Sets up input handling based on device type (touch or mouse).
  */
 setupInput() {
-    if (window.innerWidth < 720) {
-        this.setupTouchInput();
-    } else {
-        this.setupMouseInput();
-    }
+    this.removeOldInput();
+    this.setupTouchInput();
+    this.setupMouseInput();
 }
+
 
 /**
  * Sets up touch input handling for mobile devices.
  */
 setupTouchInput() {
-    this.canvas.addEventListener("touchstart", (e) => {
+    this.touchHandler = (e) => {
         e.preventDefault();
         const rect = this.canvas.getBoundingClientRect();
         const scaleX = this.canvas.width / rect.width;
@@ -88,19 +87,37 @@ setupTouchInput() {
         const canvasX = (e.touches[0].clientX - rect.left) * scaleX;
         const canvasY = (e.touches[0].clientY - rect.top) * scaleY;
         this.handleInput(canvasX, canvasY);
-    });
+    };
+    this.canvas.addEventListener("touchstart", this.touchHandler);
 }
+
 
 /**
  * Sets up mouse input handling for desktop devices.
  */
 setupMouseInput() {
-    this.canvas.addEventListener("click", (e) => {
+    this.mouseHandler = (e) => {
         const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
         this.handleInput(x, y);
-    });
+    };
+    this.canvas.addEventListener("click", this.mouseHandler);
+}
+
+
+/**
+ * Removes old input handlers to prevent conflicts.
+ */
+removeOldInput() {
+    if (this.mouseHandler) {
+        this.canvas.removeEventListener("click", this.mouseHandler);
+        this.mouseHandler = null;
+    }
+    if (this.touchHandler) {
+        this.canvas.removeEventListener("touchstart", this.touchHandler);
+        this.touchHandler = null;
+    }
 }
 
 /**

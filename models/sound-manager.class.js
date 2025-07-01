@@ -16,10 +16,17 @@ constructor() {
     for (const sound of Object.values(this.sounds)) {
         sound.volume = 0.15;
     }
-    if (this.enabled) {
-        this.music.play();
-    }
 }
+
+/**
+ * Plays the background music if sound is enabled.
+ * @public
+ */
+unlockAudio() {
+        if (this.enabled) {
+            this.music.play().catch(e => console.warn(e));
+        }
+    }
 
 /**
  * Plays the specified sound by name if sound is enabled and the sound exists.

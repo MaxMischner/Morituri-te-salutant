@@ -267,4 +267,17 @@ drawEnemyDebugFrame(enemy) {
         this.drawFrame(enemy, this.getDebugColor(enemy));
     }
 }
+
+/**
+ * Handles the start screen input and transitions to the menu state.
+ * 
+ * @param {number} x - The mouse x-coordinate.
+ * @param {number} y - The mouse y-coordinate.
+ */
+handleStartScreenInput(x, y) {
+    if (this.ui.isInside(x, y, this.playButton)) {
+        soundManager.unlockAudio();  // Sound freigeben
+        this.gameStateManager.setCurrentState('menu');
+    }
+}
 }
