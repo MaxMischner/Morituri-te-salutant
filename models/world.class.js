@@ -277,15 +277,6 @@ drawMenuScreen() {
 }
 
 /**
- * Logs stunned enemies to the console for debugging.
- */
-logStunnedEnemies() {
-    this.level.enemies.forEach(enemy => {
-        if (enemy.isStunned) console.log("Stunned enemy:", enemy);
-    });
-}
-
-/**
  * Starts the cloud spawning loop with spawn control.
  * 
  * - Maintains a list of active clouds in `level.clouds`.

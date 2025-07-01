@@ -14,6 +14,23 @@ body{
     flex-direction: column;
 }
 
+.impressum-page {
+    background-image: url('img/Plattform/2background/Background.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+
+
+
+
 #mobile-controls-left {
     position: absolute;
     bottom: 20px;
@@ -64,6 +81,11 @@ body{
     justify-content: center;
     user-select: none;
     touch-action: none; 
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    touch-action: manipulation;
 }
 
 .footer {
@@ -85,7 +107,7 @@ body{
 }
 
 .impressum-box {
-    background-color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.8);
     color: #222;
     max-width: 700px;
     padding: 30px;
@@ -167,6 +189,11 @@ body{
 .collectable-info p {
     margin: 5px 0;
 }
+
+.control-button {
+    
+}
+
 
 @media only screen and (max-width: 1367px)  {
     .main-container {

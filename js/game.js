@@ -77,14 +77,17 @@ window.addEventListener("keydown", handleKeyDown);
  * @param {KeyboardEvent} e - The keyboard event object.
  */
 function handleKeyDown(e) {
-    if (e.keyCode === 68) keyboard.RIGTH = true;  // D → Right
-    if (e.keyCode === 65) keyboard.LEFT = true;   // A → Left
-    if (e.keyCode === 87) keyboard.UP = true;     // W → Up (Jump)
-    if (e.keyCode === 83) keyboard.DOWN = true;   // S → Down
-    if (e.keyCode === 32) keyboard.SPACE = true;  // SPACE → Attack
-    if (e.keyCode === 69) keyboard.E = true;      // E → Block
-}
+    if (!world?.gameStateManager || world.gameStateManager.currentState !== 'playing') return;
 
+    switch (e.code) {
+        case "KeyD": keyboard.RIGTH = true; break;
+        case "KeyA": keyboard.LEFT = true; break;
+        case "KeyW": keyboard.UP = true; break;
+        case "KeyS": keyboard.DOWN = true; break;
+        case "Space": keyboard.SPACE = true; break;
+        case "KeyE": keyboard.E = true; break;
+    }
+}
 
 /**
  * Adds a keyup listener to reset movement and action keys when released.
@@ -96,23 +99,28 @@ window.addEventListener("keyup", handleKeyUp);
  * @param {KeyboardEvent} e - The keyboard event object.
  */
 function handleKeyUp(e) {
-    if (e.keyCode === 68) keyboard.RIGTH = false; // D → Right
-    if (e.keyCode === 65) keyboard.LEFT = false;  // A → Left
-    if (e.keyCode === 87) keyboard.UP = false;    // W → Up
-    if (e.keyCode === 83) keyboard.DOWN = false;  // S → Down
-    if (e.keyCode === 32) keyboard.SPACE = false; // SPACE → Attack
-    if (e.keyCode === 69) keyboard.E = false;     // E → Block
+    switch (e.code) {
+        case "KeyD": keyboard.RIGTH = false; break;
+        case "KeyA": keyboard.LEFT = false; break;
+        case "KeyW": keyboard.UP = false; break;
+        case "KeyS": keyboard.DOWN = false; break;
+        case "Space": keyboard.SPACE = false; break;
+        case "KeyE": keyboard.E = false; break;
+    }
 }
+
 
 
 /**
  * Enables touch control for the left movement button.
  * When pressed, the character moves left.
  */
-document.getElementById('leftButton').addEventListener('touchstart', () => {
+document.getElementById('leftButton').addEventListener('touchstart', (e) => {
+    e.preventDefault();
     keyboard.LEFT = true;
 });
-document.getElementById('leftButton').addEventListener('touchend', () => {
+document.getElementById('leftButton').addEventListener('touchend', (e) => {
+    e.preventDefault();
     keyboard.LEFT = false;
 });
 
@@ -120,10 +128,12 @@ document.getElementById('leftButton').addEventListener('touchend', () => {
  * Enables touch control for the right movement button.
  * When pressed, the character moves right.
  */
-document.getElementById('rightButton').addEventListener('touchstart', () => {
+document.getElementById('rightButton').addEventListener('touchstart', (e) => {
+    e.preventDefault();
     keyboard.RIGTH = true;
 });
-document.getElementById('rightButton').addEventListener('touchend', () => {
+document.getElementById('rightButton').addEventListener('touchend', (e) => {
+    e.preventDefault();
     keyboard.RIGTH = false;
 });
 
@@ -131,10 +141,12 @@ document.getElementById('rightButton').addEventListener('touchend', () => {
  * Enables touch control for the jump button.
  * When pressed, the character jumps.
  */
-document.getElementById('jumpButton').addEventListener('touchstart', () => {
+document.getElementById('jumpButton').addEventListener('touchstart', (e) => {
+    e.preventDefault();
     keyboard.UP = true;
 });
-document.getElementById('jumpButton').addEventListener('touchend', () => {
+document.getElementById('jumpButton').addEventListener('touchend', (e) => {
+    e.preventDefault();
     keyboard.UP = false;
 });
 
@@ -142,10 +154,12 @@ document.getElementById('jumpButton').addEventListener('touchend', () => {
  * Enables touch control for the attack button.
  * When pressed, the character performs an attack.
  */
-document.getElementById('attackButton').addEventListener('touchstart', () => {
+document.getElementById('attackButton').addEventListener('touchstart', (e) => {
+    e.preventDefault();
     keyboard.SPACE = true;
 });
-document.getElementById('attackButton').addEventListener('touchend', () => {
+document.getElementById('attackButton').addEventListener('touchend', (e) => {
+    e.preventDefault();
     keyboard.SPACE = false;
 });
 
@@ -153,10 +167,12 @@ document.getElementById('attackButton').addEventListener('touchend', () => {
  * Enables touch control for the block button.
  * When pressed, the character blocks incoming attacks.
  */
-document.getElementById('blockButton').addEventListener('touchstart', () => {
+document.getElementById('blockButton').addEventListener('touchstart', (e) => {
+    e.preventDefault();
     keyboard.E = true;
 });
-document.getElementById('blockButton').addEventListener('touchend', () => {
+document.getElementById('blockButton').addEventListener('touchend', (e) => {
+    e.preventDefault();
     keyboard.E = false;
 });
 

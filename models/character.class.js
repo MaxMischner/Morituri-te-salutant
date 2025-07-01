@@ -75,6 +75,7 @@ checkFallIntoPit() {
  * @private
  */
 handleMovement() {
+    if (!this.canMove) return;
     const endZoneStart = this.world.level.level_end_x - 720;
     const levelEnd = this.world.level.level_end_x - 50;
     const inEndZone = this.x >= endZoneStart;
@@ -94,6 +95,7 @@ handleMovement() {
  * @private
  */
 handleCombatInput() {
+    if (!this.canMove) return;
     if (this.world.keyboard.SPACE && !this.isAttacking) {
         this.attack();
     }
@@ -128,6 +130,10 @@ clampCharacterPosition() {
  * @private
  */
 handleAnimationState() {
+    if (!this.canMove) {
+        this.updateIdleAnimation();
+        return;
+    }
     if (this.isBlocking) {
         this.updateBlockAnimation();
     } else if (this.isAttacking) {
@@ -142,6 +148,7 @@ handleAnimationState() {
         this.updateRunOrIdleAnimation();
     }
 }
+
 
 /**
  * Updates the block animation and handles block hold logic.
@@ -239,21 +246,4 @@ updateBlockStatus() {
         }
     }
 }
-
-handleMovement() {
-    if (!this.canMove) return;  
-    const endZoneStart = this.world.level.level_end_x - 720;
-    const levelEnd = this.world.level.level_end_x - 50;
-    const inEndZone = this.x >= endZoneStart;
-    if (this.world.keyboard.RIGTH && this.x < levelEnd) {
-        this.moveRight();
-    }if (this.world.keyboard.LEFT) {
-        if ((inEndZone && this.x > endZoneStart) || (!inEndZone && this.x > 25)) {
-            this.moveLeft();
-        }
-    }this.world.camera_x = (this.x <= endZoneStart)
-        ? -this.x + 25
-        : -endZoneStart;
-}
-
 }
